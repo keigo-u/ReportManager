@@ -9,7 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        
+        TabView {
+            
+            TaskManagementView()
+                .tabItem {
+                    Text("課題管理")
+                }
+            TimeTable()
+                .tabItem {
+                    Text("時間割")
+                }
+        }
     }
 }
 
