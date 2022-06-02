@@ -19,6 +19,7 @@
 		B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */; };
 		B9B1AEA7281131190059EE02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA6281131190059EE02 /* Assets.xcassets */; };
 		B9B1AEAA281131190059EE02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */; };
+		D5F7574E28488BB60097B803 /* testfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7574D28488BB60097B803 /* testfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kadai_kanriApp.swift; sourceTree = "<group>"; };
 		B9B1AEA6281131190059EE02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D5F7574D28488BB60097B803 /* testfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				B932AF6B283F467E00DDE610 /* TaskManagementView.swift */,
 				B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */,
 				B9AA7E93282CE26F00575BF3 /* TimeTable.swift */,
+				D5F7574D28488BB60097B803 /* testfile.swift */,
 				B932AF6F283F6F5A00DDE610 /* ContentView.swift */,
 				B90CAFAC2836846D00E860B5 /* AddCell.swift */,
 				B90CAFAE28369D4E00E860B5 /* RadioButton.swift */,
@@ -167,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */,
+				D5F7574E28488BB60097B803 /* testfile.swift in Sources */,
 				B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */,
 				B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */,
 				B9AA7E94282CE26F00575BF3 /* TimeTable.swift in Sources */,
