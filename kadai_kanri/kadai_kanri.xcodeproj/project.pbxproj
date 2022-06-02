@@ -12,10 +12,17 @@
 		B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF67283F45DF00DDE610 /* AddAssignment.swift */; };
 		B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6B283F467E00DDE610 /* TaskManagementView.swift */; };
 		B932AF6E283F467E00DDE610 /* TaskDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */; };
+		B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6F283F6F5A00DDE610 /* ContentView.swift */; };
+		B99D98EC284889A800FDD848 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B99D98EB284889A800FDD848 /* Realm */; };
+		B99D98EE284889A800FDD848 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B99D98ED284889A800FDD848 /* RealmSwift */; };
 		B9AA7E94282CE26F00575BF3 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA7E93282CE26F00575BF3 /* TimeTable.swift */; };
 		B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */; };
 		B9B1AEA7281131190059EE02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA6281131190059EE02 /* Assets.xcassets */; };
 		B9B1AEAA281131190059EE02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */; };
+		D5F7574E28488BB60097B803 /* testfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7574D28488BB60097B803 /* testfile.swift */; };
+		D5F7575128488F660097B803 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7575028488F660097B803 /* Assignment.swift */; };
+		D5F757542848913E0097B803 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D5F757532848913E0097B803 /* RealmSwift */; };
+		D5F75756284893FD0097B803 /* TimeTableElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F75755284893FD0097B803 /* TimeTableElement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,11 +31,15 @@
 		B932AF67283F45DF00DDE610 /* AddAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAssignment.swift; sourceTree = "<group>"; };
 		B932AF6B283F467E00DDE610 /* TaskManagementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManagementView.swift; sourceTree = "<group>"; };
 		B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDescriptionView.swift; sourceTree = "<group>"; };
+		B932AF6F283F6F5A00DDE610 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B9AA7E93282CE26F00575BF3 /* TimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTable.swift; sourceTree = "<group>"; };
 		B9B1AE9F281131160059EE02 /* kadai_kanri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kadai_kanri.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kadai_kanriApp.swift; sourceTree = "<group>"; };
 		B9B1AEA6281131190059EE02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D5F7574D28488BB60097B803 /* testfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testfile.swift; sourceTree = "<group>"; };
+		D5F7575028488F660097B803 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		D5F75755284893FD0097B803 /* TimeTableElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableElement.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +47,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5F757542848913E0097B803 /* RealmSwift in Frameworks */,
+				B99D98EE284889A800FDD848 /* RealmSwift in Frameworks */,
+				B99D98EC284889A800FDD848 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +79,10 @@
 				B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */,
 				B932AF6B283F467E00DDE610 /* TaskManagementView.swift */,
 				B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */,
+				D5F75757284896540097B803 /* Model */,
 				B9AA7E93282CE26F00575BF3 /* TimeTable.swift */,
+				D5F7574D28488BB60097B803 /* testfile.swift */,
+				B932AF6F283F6F5A00DDE610 /* ContentView.swift */,
 				B90CAFAC2836846D00E860B5 /* AddCell.swift */,
 				B90CAFAE28369D4E00E860B5 /* RadioButton.swift */,
 				B9B1AEA6281131190059EE02 /* Assets.xcassets */,
@@ -80,6 +97,15 @@
 				B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D5F75757284896540097B803 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D5F7575028488F660097B803 /* Assignment.swift */,
+				D5F75755284893FD0097B803 /* TimeTableElement.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -98,6 +124,11 @@
 			dependencies = (
 			);
 			name = kadai_kanri;
+			packageProductDependencies = (
+				B99D98EB284889A800FDD848 /* Realm */,
+				B99D98ED284889A800FDD848 /* RealmSwift */,
+				D5F757532848913E0097B803 /* RealmSwift */,
+			);
 			productName = kadai_kanri;
 			productReference = B9B1AE9F281131160059EE02 /* kadai_kanri.app */;
 			productType = "com.apple.product-type.application";
@@ -126,6 +157,10 @@
 				Base,
 			);
 			mainGroup = B9B1AE96281131160059EE02;
+			packageReferences = (
+				B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = B9B1AEA0281131160059EE02 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -153,11 +188,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */,
+				D5F7574E28488BB60097B803 /* testfile.swift in Sources */,
 				B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */,
+				B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */,
 				B9AA7E94282CE26F00575BF3 /* TimeTable.swift in Sources */,
 				B90CAFAD2836846D00E860B5 /* AddCell.swift in Sources */,
 				B90CAFAF28369D4E00E860B5 /* RadioButton.swift in Sources */,
 				B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */,
+				D5F7575128488F660097B803 /* Assignment.swift in Sources */,
+				D5F75756284893FD0097B803 /* TimeTableElement.swift in Sources */,
 				B932AF6E283F467E00DDE610 /* TaskDescriptionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +402,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B99D98EB284889A800FDD848 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		B99D98ED284889A800FDD848 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		D5F757532848913E0097B803 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B9B1AE97281131160059EE02 /* Project object */;
 }

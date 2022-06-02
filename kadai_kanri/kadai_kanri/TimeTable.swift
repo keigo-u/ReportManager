@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        TabView {
-            
-            TaskManagementView()
-                .tabItem {
-                    Text("課題管理")
-                }
-            TimeTable()
-                .tabItem {
-                    Text("時間割")
-                }
-        }
-    }
-}
-
 struct TimeTable: View {
     @State var classes: [[String]] = [[" ","CS","情報処理","",""], ["DS","DS","中国語","CD","CD"], [" ","","","",""], ["","", "実験","実験","熱流体"], ["","", "中国語","DM",""]]
     @State private var isadd: Bool = false
