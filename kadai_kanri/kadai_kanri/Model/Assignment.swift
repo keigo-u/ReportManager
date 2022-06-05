@@ -15,6 +15,7 @@ class Assignment: Object, ObjectKeyIdentifiable{
     @Persisted var limitDate: Date //期限
     @Persisted var duration: Int //所要時間
     @Persisted var className: String //科目名
+    @Persisted var userName: String  = "anonymous"//ユーザー名（とりあえず今はデフォルトで入っていることにする）
     
     
     convenience init(assigmentName: String, detail: String,limitDate: Date ,duration: Int,className: String){
