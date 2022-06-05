@@ -39,9 +39,12 @@ struct TaskManagementView: View {
                                 {
                                     ZStack(alignment: .leading){
                                         Rectangle().fill(.gray)
+                                        let timeDay = (oneAssignment.duration/1440)
+                                        let timeHour = (oneAssignment.duration%1440)/60
+                                        let timeMinute = oneAssignment.duration%60
                                         Text("""
                                             課題名:\(oneAssignment.assignmentName)
-                                            所要時間:\(oneAssignment.duration)
+                                            所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
                                             """)
                                     }
                                 }
@@ -53,6 +56,7 @@ struct TaskManagementView: View {
                     }
                     .listStyle(InsetListStyle())
                     
+                    //課題追加画面を呼び出す
                     NavigationLink(destination: AddAssignment(state: $isAddTask), isActive: $isAddTask) {
                         if #available(iOS 15.0, *) {
                             Button (action:{
