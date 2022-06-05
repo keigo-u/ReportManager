@@ -37,6 +37,7 @@
 		B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kadai_kanriApp.swift; sourceTree = "<group>"; };
 		B9B1AEA6281131190059EE02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D59D898C284C8F440028A4AE /* reference.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = reference.md; sourceTree = "<group>"; };
 		D5F7574D28488BB60097B803 /* testfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testfile.swift; sourceTree = "<group>"; };
 		D5F7575028488F660097B803 /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
 		D5F75755284893FD0097B803 /* TimeTableElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableElement.swift; sourceTree = "<group>"; };
@@ -87,6 +88,7 @@
 				B90CAFAE28369D4E00E860B5 /* RadioButton.swift */,
 				B9B1AEA6281131190059EE02 /* Assets.xcassets */,
 				B9B1AEA8281131190059EE02 /* Preview Content */,
+				D59D898C284C8F440028A4AE /* reference.md */,
 			);
 			path = kadai_kanri;
 			sourceTree = "<group>";
