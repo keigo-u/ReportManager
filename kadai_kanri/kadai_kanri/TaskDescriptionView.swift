@@ -9,6 +9,9 @@ import SwiftUI
 
 struct TaskDescriptionView: View {
     var averageTime = 90
+    
+    var selectedAssignment: Assignment //選択されたタスク
+    
     var nameList = ["A","B","C","D"]
     var notesList = ["めんどくさすぎ","かんたん","easy","hard"]
     @Binding var state :Bool

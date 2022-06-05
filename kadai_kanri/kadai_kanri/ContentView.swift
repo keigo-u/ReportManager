@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct ContentView: View {
+        
     var body: some View {
         TabView {
             
-            TaskManagementView()
+            TaskManagementView() //realmオブジェクトを渡す
                 .tabItem {
                     Text("課題管理")
                 }
