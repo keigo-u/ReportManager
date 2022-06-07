@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct TaskDescriptionView: View {
     /*
@@ -17,13 +18,20 @@ struct TaskDescriptionView: View {
     var averageTime = 90
     
     var selectedAssignment: Assignment //選択されたタスク
+    @ObservedResults(Assignment.self) var assignments //課題のリスト
     
-    var nameList = ["A","B","C","D"]
-    var notesList = ["めんどくさすぎ","かんたん","easy","hard"]
+//
+//    var nameList = ["A","B","C","D"]
+//    var notesList = ["めんどくさすぎ","かんたん","easy","hard"]
+//
     @Binding var state :Bool
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
+        
+        let filtering = NSPredicate(format: "assignmentName = %@", argumentArray: ["\(selectedAssignment.assignmentName)"]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
+        let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
+        
         VStack {
             Text("課題詳細")
                 .font(.largeTitle)
@@ -31,14 +39,14 @@ struct TaskDescriptionView: View {
             Text("平均所要時間\(averageTime)分")
             
             List{
-                ForEach(0 ..< nameList.count) { id in
+                ForEach(filtedList) { element in
                     
                     ZStack(alignment: .leading) {
                         Rectangle().fill(.gray)
                         Text("""
-                             \(nameList[id])さん
-                             所要時間:\(averageTime)
-                             備考:\(notesList[id])
+                             \(element.userName)さん
+                             所要時間:\(element.duration)
+                             備考:\(element.detail)
                              """)
                             .padding()
                     }
