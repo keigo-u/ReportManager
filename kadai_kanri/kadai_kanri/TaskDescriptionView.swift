@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct TaskDescriptionView: View {
+    /*
+     タスク詳細画面は、「あるタスク」を終了するのにかかる時間や、その感想などを表示する箇所である
+     が、現在ローカルでのみ動作するので、本来ここで表示する「みんな」のタスクにかかる時間などを表示することができない
+     ので、
+     @persisted(Assignment.self)をselectedAssignemtの名前（もしくはid?）でフィルターしたものを表示するようにしたい。(なんとなくそっちの方が後から楽そう)
+     */
     var averageTime = 90
+    
+    var selectedAssignment: Assignment //選択されたタスク
+    
     var nameList = ["A","B","C","D"]
     var notesList = ["めんどくさすぎ","かんたん","easy","hard"]
     @Binding var state :Bool
