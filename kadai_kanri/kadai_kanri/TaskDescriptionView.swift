@@ -15,6 +15,7 @@ struct TaskDescriptionView: View {
      ので、
      @persisted(Assignment.self)をselectedAssignemtの名前（もしくはid?）でフィルターしたものを表示するようにしたい。(なんとなくそっちの方が後から楽そう)
      */
+    @Environment(\.presentationMode) var presentationMode //戻るボタンを作るために作成
     var averageTime = 90
     
     var selectedAssignment: Assignment //選択されたタスク
@@ -25,7 +26,7 @@ struct TaskDescriptionView: View {
 //    var notesList = ["めんどくさすぎ","かんたん","easy","hard"]
 //
     @Binding var state :Bool
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         
@@ -37,6 +38,8 @@ struct TaskDescriptionView: View {
                 .font(.largeTitle)
             
             Text("平均所要時間\(averageTime)分")
+            
+            Text("要素の名前:\(selectedAssignment.assignmentName)")
             
             List{
                 ForEach(filtedList) { element in
@@ -58,7 +61,7 @@ struct TaskDescriptionView: View {
             .listStyle(SidebarListStyle())
             
             Button(action: {
-                state = false
+                dismiss()
             }){
                 Text("戻る")
                     .font(.largeTitle)

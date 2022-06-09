@@ -16,6 +16,50 @@
 
 filteringはNSなんたらオブジェクトを作って渡してあげてばいけるみたい。
 
+[【SwiftUI】画面を閉じるdismissとisPresentedについて](https://capibara1969.com/3700/)
+
+戻る画面を作るのに使ったかも？
+
 # 困っていること
 
 - タスク管理画面からタスク詳細画面へ移行する際に、クリックされた箇所に対応するselectedassignmentを渡すのだけれども、どうもうまくいってない
+
+##解決かも
+```
+
+        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+            ZStack(alignment: .leading){
+                Rectangle().fill(.gray)
+                let timeDay = (oneAssignment.duration/1440)
+                let timeHour = (oneAssignment.duration%1440)/60
+                let timeMinute = oneAssignment.duration%60
+                Text("""
+                    課題名:\(oneAssignment.assignmentName)
+                    所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                    """)
+            }
+            
+        }
+        //.onTapGesture{
+            //isSelected = true
+        //}
+        //.navigationBarHidden(true)
+```
+
+NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected),isActive: $isSelected)
+としていたのが原因ぽかった。
+多分NavigationLinkのisActiveが原因。
+NavigationLinkのViewをクリックすると、画面が遷移する。遷移するとこのisActiveの値もtrueになるみたい。
+
+これが悪さをしているんじゃないかな？
+
+多分だけど、foreachでnavigationLinkを作りまくっていて、全部引数にisActiveを持っている。
+で、一つのnavigationLinkをクリックすると、他のNavigationLinkのisActiveの値も、trueに変わる。
+そうすると、isActiveがtrueなので、他のNavigationLinkもdestivationの箇所を表示しようと頑張って、
+意図していない（タップしていない）箇所のNavigationLinkが呼び出されると思う。
+多分ね。
+
+isActiveを使うときはそれに注意しないといけないのかも・・・
+
+
+

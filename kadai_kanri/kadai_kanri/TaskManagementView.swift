@@ -28,29 +28,17 @@ struct TaskManagementView: View {
                 
                 VStack{
                     Text("現在出されている課題")
+                    
+//                    let realm = try! Realm()
+//                    let freze_assignments = realm.objects(Assignment.self)
+                    
                     List{
                         //assignmentは予約語だったという・・・
                         ForEach(assignments) { oneAssignment in
                             //タスク詳細画面を呼び出す
-                            NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected), isActive: $isSelected) {
-                                Button(action: {
-                                    isSelected = true
-                                })
-                                {
-                                    ZStack(alignment: .leading){
-                                        Rectangle().fill(.gray)
-                                        let timeDay = (oneAssignment.duration/1440)
-                                        let timeHour = (oneAssignment.duration%1440)/60
-                                        let timeMinute = oneAssignment.duration%60
-                                        Text("""
-                                            課題名:\(oneAssignment.assignmentName)
-                                            所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                            """)
-                                    }
-                                }
-                                
-                            }
-                            .navigationBarHidden(true)
+                            TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected)
+                            
+                            //Text("\(freze_assignments[num].assignmentName)")
                         }
                         Spacer()
                     }
@@ -90,5 +78,28 @@ struct TaskManagementView: View {
 struct TaskManagementView_Previews: PreviewProvider {
     static var previews: some View {
         TaskManagementView()
+    }
+}
+
+//課題の行一つ分のView
+struct TaskRow: View{
+    var oneAssignment: Assignment
+    @Binding var isSelected: Bool
+    
+    var body: some View{
+        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+            ZStack(alignment: .leading){
+                Rectangle().fill(.gray)
+                let timeDay = (oneAssignment.duration/1440)
+                let timeHour = (oneAssignment.duration%1440)/60
+                let timeMinute = oneAssignment.duration%60
+                Text("""
+                    課題名:\(oneAssignment.assignmentName)
+                    所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                    """)
+            }
+            
+        }
+        .navigationBarHidden(true)
     }
 }
