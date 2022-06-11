@@ -13,15 +13,16 @@
 		B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6B283F467E00DDE610 /* TaskManagementView.swift */; };
 		B932AF6E283F467E00DDE610 /* TaskDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */; };
 		B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6F283F6F5A00DDE610 /* ContentView.swift */; };
-		B99D98EC284889A800FDD848 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B99D98EB284889A800FDD848 /* Realm */; };
-		B99D98EE284889A800FDD848 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B99D98ED284889A800FDD848 /* RealmSwift */; };
+		B98CB1542851C2F000D3ED3C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B98CB1532851C2F000D3ED3C /* Realm */; };
+		B98CB1562851C2F000D3ED3C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B98CB1552851C2F000D3ED3C /* RealmSwift */; };
+		B99D98EC284889A800FDD848 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		B99D98EE284889A800FDD848 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		B9AA7E94282CE26F00575BF3 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA7E93282CE26F00575BF3 /* TimeTable.swift */; };
 		B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */; };
 		B9B1AEA7281131190059EE02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA6281131190059EE02 /* Assets.xcassets */; };
 		B9B1AEAA281131190059EE02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */; };
 		D5F7574E28488BB60097B803 /* testfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7574D28488BB60097B803 /* testfile.swift */; };
 		D5F7575128488F660097B803 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7575028488F660097B803 /* Assignment.swift */; };
-		D5F757542848913E0097B803 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D5F757532848913E0097B803 /* RealmSwift */; };
 		D5F75756284893FD0097B803 /* TimeTableElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F75755284893FD0097B803 /* TimeTableElement.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,20 +49,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5F757542848913E0097B803 /* RealmSwift in Frameworks */,
-				B99D98EE284889A800FDD848 /* RealmSwift in Frameworks */,
-				B99D98EC284889A800FDD848 /* Realm in Frameworks */,
+				B98CB1562851C2F000D3ED3C /* RealmSwift in Frameworks */,
+				B98CB1542851C2F000D3ED3C /* Realm in Frameworks */,
+				B99D98EE284889A800FDD848 /* (null) in Frameworks */,
+				B99D98EC284889A800FDD848 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B96B9E732851B55A00D6FD4C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B9B1AE96281131160059EE02 = {
 			isa = PBXGroup;
 			children = (
 				B9B1AEA1281131160059EE02 /* kadai_kanri */,
 				B9B1AEA0281131160059EE02 /* Products */,
+				B96B9E732851B55A00D6FD4C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,9 +137,8 @@
 			);
 			name = kadai_kanri;
 			packageProductDependencies = (
-				B99D98EB284889A800FDD848 /* Realm */,
-				B99D98ED284889A800FDD848 /* RealmSwift */,
-				D5F757532848913E0097B803 /* RealmSwift */,
+				B98CB1532851C2F000D3ED3C /* Realm */,
+				B98CB1552851C2F000D3ED3C /* RealmSwift */,
 			);
 			productName = kadai_kanri;
 			productReference = B9B1AE9F281131160059EE02 /* kadai_kanri.app */;
@@ -160,8 +169,7 @@
 			);
 			mainGroup = B9B1AE96281131160059EE02;
 			packageReferences = (
-				B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = B9B1AEA0281131160059EE02 /* Products */;
 			projectDirPath = "";
@@ -333,12 +341,13 @@
 				DEVELOPMENT_TEAM = QLDWN89ZH2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -363,12 +372,13 @@
 				DEVELOPMENT_TEAM = QLDWN89ZH2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -406,15 +416,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+		B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
 			requirement = {
@@ -425,19 +427,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B99D98EB284889A800FDD848 /* Realm */ = {
+		B98CB1532851C2F000D3ED3C /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			package = B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = Realm;
 		};
-		B99D98ED284889A800FDD848 /* RealmSwift */ = {
+		B98CB1552851C2F000D3ED3C /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B99D98EA284889A700FDD848 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
-		};
-		D5F757532848913E0097B803 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5F757522848913E0097B803 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			package = B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -12,14 +12,13 @@ struct ContentView: View {
         
     var body: some View {
         TabView {
-            
-            TaskManagementView() //realmオブジェクトを渡す
-                .tabItem {
-                    Text("課題管理")
-                }
             TimeTable()
                 .tabItem {
                     Text("時間割")
+                }
+            TaskManagementView() //realmオブジェクトを渡す
+                .tabItem {
+                    Text("課題管理")
                 }
         }
     }
