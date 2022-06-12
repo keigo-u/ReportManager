@@ -29,16 +29,13 @@ struct TaskManagementView: View {
                 VStack{
                     Text("現在出されている課題")
                     
-//                    let realm = try! Realm()
-//                    let freze_assignments = realm.objects(Assignment.self)
                     
                     List{
                         //assignmentは予約語だったという・・・
                         ForEach(assignments) { oneAssignment in
                             //タスク詳細画面を呼び出す
                             TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected)
-                            
-                            //Text("\(freze_assignments[num].assignmentName)")
+
                         }
                         Spacer()
                     }

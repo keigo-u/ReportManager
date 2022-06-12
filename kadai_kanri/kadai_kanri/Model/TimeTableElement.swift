@@ -21,5 +21,5 @@ class TimeTableElement: Object, ObjectKeyIdentifiable{
         self.dayOfWeek = dayOfWeek
         self.period = period
         self.className = className
-    }
+    } 
 }

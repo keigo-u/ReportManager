@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct AddCell: View {
+    
+    @ObservedResults(TimeTableElement.self)  var timeTableElements
+    
     @State var text: String = ""
     @State private var selectedIndex1 = 0
     @State private var selectedIndex2 = 0
@@ -30,7 +34,12 @@ struct AddCell: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
                 Button(action: {
+                    //追加するTimeTableElementオブジェクトを作成する
+                    let added_element: TimeTableElement = TimeTableElement(dayOfWeek: days[selectedIndex1], period: Int(time[selectedIndex2])!, className: text)
                     table[selectedIndex1][selectedIndex2] = text
+                    
+                    //realmに追加する
+                    $timeTableElements.append(added_element)
                     state = false
                 }) {
                     Text("追加")
