@@ -18,36 +18,35 @@ struct TimeTable: View {
         let days: [String] = ["月", "火", "水", "木", "金"]
         let width: CGFloat = 55
         let height: CGFloat = 75
-        ZStack{
-            Color.light_beige.ignoresSafeArea() //背景色
-            
-            NavigationView {
-                ScrollView {
+        
+        NavigationView {
+            ZStack {
+                Color.light_beige.ignoresSafeArea() //背景色
+                VStack {
+                    
+                    Spacer()
                     Text("時間割")
                         .font(.title)
                         .padding()
                         .background(Color.beige)
+                    Spacer()
                     
-                    HStack{
+                    HStack {
                         Text("")
-                            .frame(width: 30, height: height)
-                        
-                        //一番上の月火水木金を表示
+                            .frame(width: 30, height: 60)
+                            .background(Color.light_green)
                         ForEach(days, id: \.self) { day in
                             Text("\(day)")
-                                .frame(width: width, height: height)
-                                .border(.black, width: 1)
+                                .frame(width: width, height: 60)
                                 .background(Color.light_green)
                         }
                     }
                     
                     HStack {
                         VStack {
-                            //左側の1,2,3,4,5を表示
                             ForEach((1...5), id: \.self) { index in
                                 Text("\(index)")
                                     .frame(width: 30, height: height)
-                                    .border(.black, width: 1)
                                     .background(Color.light_green)
                             }
                         }
@@ -69,15 +68,11 @@ struct TimeTable: View {
                                     }) {
                                         TimeTableCell(width: width, height: height, className: presentText)
                                     } }
-                                    
                                 }
                             }
-    
                         }
-                        Spacer()
-                        
-                        
                     }
+                    Spacer()
                     
                     NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) {
                         Button (action:{
@@ -100,6 +95,7 @@ struct TimeTable: View {
         }
     }
 }
+
 
 struct TimeTableCell: View {
     var width: CGFloat
