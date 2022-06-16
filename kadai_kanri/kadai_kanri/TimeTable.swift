@@ -25,10 +25,15 @@ struct TimeTable: View {
                 VStack {
                     
                     Spacer()
-                    Text("時間割")
-                        .font(.title)
-                        .padding()
-                        .background(Color.beige)
+                    ZStack {
+                        Color.beige
+                        Text("時間割")
+                            .font(.title)
+                            .padding()
+                    }
+                    .frame(height: 80)
+                    .border(.black, width: 1)
+                    
                     Spacer()
                     
                     HStack {
