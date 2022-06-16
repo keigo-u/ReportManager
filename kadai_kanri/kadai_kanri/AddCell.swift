@@ -17,7 +17,6 @@ struct AddCell: View {
     @State private var selectedIndex2 = 0
     let days: [String] = ["月", "火", "水", "木", "金"]
     let time: [String] = ["1", "2", "3", "4", "5"]
-    @Binding var table: [[String]]
     @Binding var state: Bool
     
     var body: some View {
@@ -36,7 +35,6 @@ struct AddCell: View {
                 Button(action: {
                     //追加するTimeTableElementオブジェクトを作成する
                     let added_element: TimeTableElement = TimeTableElement(dayOfWeek: days[selectedIndex1], period: Int(time[selectedIndex2])!, className: text)
-                    table[selectedIndex1][selectedIndex2] = text
                     
                     //realmに追加する
                     $timeTableElements.append(added_element)
