@@ -20,6 +20,12 @@ filteringはNSなんたらオブジェクトを作って渡してあげてばい
 
 戻る画面を作るのに使ったかも？
 
+
+[Xcode Preview crashes because of RealmSwift model changes](https://stackoverflow.com/questions/66735100/xcode-preview-crashes-because-of-realmswift-model-changes)
+
+後でためす。うまくいくといいね。
+
+
 # 困っていること
 
 - タスク管理画面からタスク詳細画面へ移行する際に、クリックされた箇所に対応するselectedassignmentを渡すのだけれども、どうもうまくいってない

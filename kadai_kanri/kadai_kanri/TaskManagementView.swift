@@ -13,10 +13,10 @@ struct TaskManagementView: View {
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     @ObservedResults(TimeTableElement.self)  var timeTableElements//時間割一コマのリスト
 
-//    private var task = ["めんどくさい課題","文字数が多すぎるスーパーめんどくさくさつらい課題","テスト課題","ああ課題","めんどくさい課題","文字数が多すぎるスーパーめんどくさくさつらい課題","テスト課題","ああ課題"]
     @State private var isSelected: Bool = false
     @State private var isAddTask: Bool = false
     
+    @State private var isFinished = false //終了済みの課題を表示するかどうかにつかう。trueなら完了した課題を表示
     
     var body: some View {
         let bounds = UIScreen.main.bounds
@@ -33,12 +33,16 @@ struct TaskManagementView: View {
                     
                     VStack{
                         HStack{
-                            Button(action: {}){
+                            Button(action: {
+                                isFinished = false
+                            }){
                                 Text("実行中")
                             }
                             .padding(.trailing, 20)
                             .foregroundColor(.black)
-                            Button(action: {}){
+                            Button(action: {
+                                isFinished = true
+                            }){
                                 Text("完了済み")
                             }
                             .padding(.leading, 20)
@@ -50,8 +54,10 @@ struct TaskManagementView: View {
                     List{
                         //assignmentは予約語だったという・・・
                         ForEach(assignments) { oneAssignment in
+                            if oneAssignment.isFinished == isFinished{
                             //タスク詳細画面を呼び出す
                             TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected)
+                            }
 
                         }
                     }
@@ -103,6 +109,7 @@ struct TaskRow: View{
     @Binding var isSelected: Bool
     
     var body: some View{
+        HStack{
         NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
             ZStack(alignment: .leading){
                 Rectangle().fill(.gray)
@@ -117,5 +124,18 @@ struct TaskRow: View{
             
         }
         .navigationBarHidden(true)
+            
+            Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
+                .onTapGesture(count: 1){
+                    
+                let realm = try! Realm()
+                let finishedAssignment = oneAssignment.thaw()!
+                try! realm.write {
+                    finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
+                }
+                
+                
+            }
+        }
     }
 }
