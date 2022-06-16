@@ -14,17 +14,17 @@ struct ContentView: View {
         TabView {
             TimeTable()
                 .tabItem {
-                    Image(systemName: "house.fill")
+                    Image(systemName: "clock.fill")
                     Text("時間割")
                 }
             TaskManagementView() //realmオブジェクトを渡す
                 .tabItem {
-                    Image(systemName: "clock.fill")
+                    Image(systemName: "house.fill")
                     Text("課題管理")
                 }
             AddAssignment(state: $isAddTask)
                 .tabItem {
-                    Image(systemName: "questionmark.circle.fill")
+                    Image(systemName: "plus.app")
                     Text("課題追加")
                 }
         }
