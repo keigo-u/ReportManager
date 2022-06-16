@@ -17,73 +17,67 @@ struct TimeTable: View {
         let height: CGFloat = 75
         
         NavigationView {
-            VStack{
-                Text("時間割")
-                    .font(.title)
-                    .padding()
-                Spacer()
-                HStack {
-                    Text("")
-                        .frame(width: 30, height: height)
-                        .border(.black, width: 1)
-                        .background(Color.gray)
-                    ForEach(days, id: \.self) { day in
-                        Text("\(day)")
-                            .frame(width: width, height: height)
-                            .border(.black, width: 1)
-                            .background(Color.gray)
-                    }
-                }
-                HStack {
-                    VStack {
-                        ForEach((1...5), id: \.self) { index in
-                            Text("\(index)")
-                                .frame(width: 30, height: height)
-                                .border(.black, width: 1)
-                                .background(Color.gray)
+            ZStack{
+                Color.light_beige.ignoresSafeArea() //背景色
+                VStack{
+                    Spacer()
+                    
+                    Text("時間割")
+                        .font(.title)
+                        .padding()
+                        .background(Color.beige)
+                    Spacer()
+                    HStack {
+                        Text("")
+                            .frame(width: 30, height: 60)
+                            .background(Color.light_green)
+                        ForEach(days, id: \.self) { day in
+                            Text("\(day)")
+                                .frame(width: width, height: 60)
+                                .background(Color.light_green)
                         }
                     }
-                    ForEach((0...4), id: \.self) {i in
+                    HStack {
                         VStack {
-                            ForEach((0...4), id: \.self) { j in
-                                
-                                NavigationLink(destination: AddCell(table: $classes, state: $isadd), isActive: $isadd) { Button(action:{
-                                    isadd = true
-                                }) {
-                                    TimeTableCell(width: width, height: height, className: classes[i][j])
-                                } }
-                                .navigationBarHidden(true)
+                            ForEach((1...5), id: \.self) { index in
+                                Text("\(index)")
+                                    .frame(width: 30, height: height)
+                                    .background(Color.light_green)
+                            }
+                        }
+                        ForEach((0...4), id: \.self) {i in
+                            VStack {
+                                ForEach((0...4), id: \.self) { j in
+                                    
+                                    NavigationLink(destination: AddCell(table: $classes, state: $isadd), isActive: $isadd) { Button(action:{
+                                        isadd = true
+                                    }) {
+                                        TimeTableCell(width: width, height: height, className: classes[i][j])
+                                    } }
+                                    .navigationBarHidden(true)
+                                }
                             }
                         }
                     }
-                }
-                Spacer()
-                
-                NavigationLink(destination: AddCell(table: $classes, state: $isadd), isActive: $isadd) {
-                    if #available(iOS 15.0, *) {
+                    Spacer()
+                    
+                    NavigationLink(destination: AddCell(table: $classes, state: $isadd), isActive: $isadd) {
                         Button (action:{
                             isadd = true
                         }){
-                            Text("科目を追加する")
-                                .padding()
-                                .foregroundColor(.black)
-                        }
-                        .padding()
-                        .buttonStyle(.bordered)
-                    } else {
-                        // Fallback on earlier versions
-                        Button (action:{
-                            isadd = true
-                        }){
-                            Text("科目を追加する")
+                            Text("科目を追加")
                                 .padding()
                                 .border(.black, width: 1)
                                 .foregroundColor(.black)
-                                .background(Color.gray)
+                                .background(Color.light_green)
                         }
+                        .frame(width: 200)
                     }
+                    .navigationBarHidden(true)
+                    
+                    
+                    Spacer()
                 }
-                .navigationBarHidden(true)
             }
         }
     }
@@ -97,8 +91,8 @@ struct TimeTableCell: View {
     var body: some View {
         Text(className)
             .frame(width: width, height: height)
-            .border(.black, width: 1)
             .foregroundColor(.black)
+            .background(Color.light_green)
     }
 }
 
