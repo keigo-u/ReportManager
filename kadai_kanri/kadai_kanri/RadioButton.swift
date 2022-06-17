@@ -71,17 +71,10 @@ struct RadioButton: View {
                 HStack {
                     if model.index == self.selectedIndex {
                         ZStack {
-                            Circle()
-                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 2))
-                                .frame(width: 20, height: 20)
-                            Circle()
-                                .fill(Color.accentColor)
-                                .frame(width: 12, height: 12)
+                            Image(systemName: "checkmark.square.fill")
                         }
                     } else {
-                        Circle()
-                            .stroke(Color.gray, style: StrokeStyle(lineWidth: 2))
-                            .frame(width: 20, height: 20)
+                        Image(systemName: "square")
                     }
                     Text(model.text)
                 }

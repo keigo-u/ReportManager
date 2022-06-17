@@ -16,7 +16,7 @@ struct AddCell: View {
     @State private var selectedIndex1 = 0
     @State private var selectedIndex2 = 0
     let days: [String] = ["月", "火", "水", "木", "金"]
-    let time: [String] = ["1", "2", "3", "4", "5"]
+    let time: [String] = ["１", "２", "３", "４", "５"]
     @Binding var state: Bool
     
     var body: some View {
