@@ -12,7 +12,7 @@ struct TaskManagementView: View {
     
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     @ObservedResults(TimeTableElement.self)  var timeTableElements//時間割一コマのリスト
-
+    
     @State private var isSelected: Bool = false
     @State private var isAddTask: Bool = false
     
@@ -49,18 +49,18 @@ struct TaskManagementView: View {
                             .foregroundColor(.black)
                         }
                         .frame(width: CGFloat(screenWidth) - 40, height: 30)
-                    
-                    
-                    List{
-                        //assignmentは予約語だったという・・・
-                        ForEach(assignments) { oneAssignment in
-                            if oneAssignment.isFinished == isFinished{
-                            //タスク詳細画面を呼び出す
-                            TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected)
+                        
+                        
+                        List{
+                            //assignmentは予約語だったという・・・
+                            ForEach(assignments) { oneAssignment in
+                                if oneAssignment.isFinished == isFinished{
+                                    //タスク詳細画面を呼び出す
+                                    TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected)
+                                }
+                                
                             }
-
                         }
-                    }
                         .listStyle(InsetListStyle())
                         .frame(width: CGFloat(screenWidth)-40)
                         
@@ -110,32 +110,47 @@ struct TaskRow: View{
     
     var body: some View{
         HStack{
-        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
-            ZStack(alignment: .leading){
-                Rectangle().fill(.gray)
-                let timeDay = (oneAssignment.duration/1440)
-                let timeHour = (oneAssignment.duration%1440)/60
-                let timeMinute = oneAssignment.duration%60
-                Text("""
+            NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+                ZStack(alignment: .leading){
+                    Rectangle().fill(.gray)
+                    let timeDay = (oneAssignment.duration/1440)
+                    let timeHour = (oneAssignment.duration%1440)/60
+                    let timeMinute = oneAssignment.duration%60
+                    Text("""
                     課題名:\(oneAssignment.assignmentName)
                     所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
                     """)
-            }
-            
-        }
-        .navigationBarHidden(true)
-            
-            Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
-                .onTapGesture(count: 1){
-                    
-                let realm = try! Realm()
-                let finishedAssignment = oneAssignment.thaw()!
-                try! realm.write {
-                    finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
                 }
                 
+            }
+            .navigationBarHidden(true)
+            
+            VStack{
+                //チェックボックス、タップすると完了済みに移動
+                Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
+                    .onTapGesture(count: 1){
+                        
+                        let realm = try! Realm()
+                        let finishedAssignment = oneAssignment.thaw()!
+                        try! realm.write {
+                            finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
+                        }
+                        
+                        
+                    }
                 
+                //ゴミ箱、タップすると削除される
+                Image(systemName: "trash.fill")
+                    .onTapGesture(count: 1) {
+                        let realm = try! Realm()
+                        let deletedAssignment = oneAssignment.thaw()!
+                        try! realm.write {
+                            realm.delete(deletedAssignment)
+                        }
+                        
+                    }
             }
         }
     }
+    
 }
