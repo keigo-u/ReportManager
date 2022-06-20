@@ -62,6 +62,12 @@ orの書き方を知りたくて
 
 データの削除のやり方を見た
 
+[【SwiftUI】アラートの使い方（alert）](https://capibara1969.com/3757/)
+
+[SwiftUI「アラート(Alert)」が表示されない3つの原因](https://www.choge-blog.com/programming/swiftui%E3%80%8C%E3%82%A2%E3%83%A9%E3%83%BC%E3%83%88alert%E3%80%8D%E3%81%8C%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%81%AA%E3%81%843%E3%81%A4%E3%81%AE%E5%8E%9F%E5%9B%A0/)
+
+
+
 # 困っていること
 
 
