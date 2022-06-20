@@ -10,7 +10,7 @@ import RealmSwift
 
 class TimeTableElement: Object, ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id: ObjectId //ID
-    @Persisted var dayOfWeek: String //曜日
+    @Persisted var dayOfWeek: String //曜日 月、火、水、・・・
     @Persisted var period: Int //時間
     @Persisted var className: String //科目名
     @Persisted var Assignments: List<Assignment>//課題のリスト

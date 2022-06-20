@@ -27,7 +27,7 @@ struct ContentView: View {
     @State private var isAddTask: Bool = false
     
     init(){
-        UITabBar.appearance().backgroundColor = UIColor(red: 140, green: 140, blue: 140, alpha: 1) //タブの背景色を指定
+        UITabBar.appearance().backgroundColor = UIColor(red: 255, green: 140, blue: 140, alpha: 1) //タブの背景色を指定
     }
     var body: some View {
         
