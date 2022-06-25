@@ -14,12 +14,16 @@ class TimeTableElement: Object, ObjectKeyIdentifiable{
     @Persisted var period: Int //時間
     @Persisted var className: String //科目名
     @Persisted var Assignments: List<Assignment>//課題のリスト
+    @Persisted var teacher: String //担当教員
+    @Persisted var place: String //場所
     
     
-    convenience init(dayOfWeek: String, period: Int,className: String ){
+    convenience init(dayOfWeek: String, period: Int,className: String, teacher: String, place: String){
         self.init()
         self.dayOfWeek = dayOfWeek
         self.period = period
         self.className = className
+        self.teacher = teacher
+        self.place = place
     } 
 }
