@@ -134,6 +134,9 @@ struct TaskManagementView: View {
                                     }
                                 }
                             }
+                            Divider()
+                                .background(Color(hex: "8C8C8C"))
+                                .frame(height:2)
                         }
                     }
                 }

@@ -24,4 +24,3 @@ extension Color {
     static let beige = Color("beige")
     static let light_gray = Color("light_gray")
 }
-
