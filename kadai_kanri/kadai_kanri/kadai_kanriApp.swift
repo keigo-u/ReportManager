@@ -20,5 +20,8 @@ struct kadai_kanriApp: App {
 
 extension Color {
     static let light_beige = Color("light_beige")
+    static let light_green = Color("light_green")
+    static let beige = Color("beige")
+    static let light_gray = Color("light_gray")
 }
 
