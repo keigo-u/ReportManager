@@ -13,6 +13,7 @@ struct TimeTable: View {
     @ObservedResults(TimeTableElement.self)  var timeTableElements
     
     @State private var isadd: Bool = false
+    @State private var isdsc: Bool = false
     @State private var showDeleteAlert: Bool = false //登録されていない科目を削除されそうな時に表示するアラート用
     
     var body: some View {
@@ -33,7 +34,7 @@ struct TimeTable: View {
                             .padding()
                     }
                     .frame(height: 80)
-                    .border(.black, width: 1)
+                    .border(.gray, width: 2)
                     
                     Spacer()
                     
@@ -69,8 +70,8 @@ struct TimeTable: View {
                                     let presentText: String = filtedList.count != 0 ? filtedList[0].className : "" //結果があるときはフィルタリング結果の0番目、ないときは何も表示しない
                                     
                                     //実際にViewを作る
-                                    NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) { Button(action:{
-                                        isadd = true
+                                    NavigationLink(destination: ClassDescription(day: day, period: pe, state: $isdsc), isActive: $isdsc) { Button(action:{
+                                        isdsc = true
                                     }) {
                                         TimeTableCell(width: width, height: height, className: presentText)
                                     } }
@@ -90,7 +91,6 @@ struct TimeTable: View {
                                         }
                                         
                                     })
-                                    
                                 }
                             }
                         }
@@ -109,6 +109,8 @@ struct TimeTable: View {
                                 .background(Color.light_green)
                         }
                         .frame(width: 200)
+                        .compositingGroup()        // Viewの要素をグループ化
+                        .shadow(radius: 3, y: 5)
                     }
                     .navigationBarHidden(true)
                     

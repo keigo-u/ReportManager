@@ -111,6 +111,9 @@ struct AddCell: View {
                         .background(Color.light_green)
                 }
                 .frame(width: 200)
+                .compositingGroup()        // Viewの要素をグループ化
+                .shadow(radius: 3, y: 5)
+                
                 Spacer()
                 
                 Button(action: {
@@ -122,6 +125,8 @@ struct AddCell: View {
                         .background(Color.light_gray)
                 }
                 .padding()
+                .compositingGroup()        // Viewの要素をグループ化
+                .shadow(radius: 3, y: 5)
             }
         }
         .navigationBarHidden(true)
@@ -138,9 +143,10 @@ struct Item {
     }
 }
 
-
+/*
 struct AddCell_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+*/

@@ -178,7 +178,6 @@ struct TaskRow: View{
         
         NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
             ZStack(alignment: .leading){
-                Rectangle().fill(.gray)
                 let timeDay = (oneAssignment.duration/1440)
                 let timeHour = (oneAssignment.duration%1440)/60
                 let timeMinute = oneAssignment.duration%60
@@ -186,14 +185,11 @@ struct TaskRow: View{
                     課題名:\(oneAssignment.assignmentName)
                     所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
                     """)
+                    .foregroundColor(Color.black)
             }
-            
         }
         .navigationBarHidden(true)
-        
-        
     }
-    
 }
 
 //課題を終了したときに出てくるポップアップ。値の置き換えもここで行う
