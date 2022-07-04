@@ -11,7 +11,6 @@ import RealmSwift
 struct TaskManagementView: View {
     
     @ObservedResults(Assignment.self) var assignments //課題のリスト
-    @ObservedResults(TimeTableElement.self)  var timeTableElements//時間割一コマのリスト
     
     @State private var isSelected: Bool = false
     @State private var isAddTask: Bool = false
@@ -24,6 +23,7 @@ struct TaskManagementView: View {
     
     @State private var nowSelectedAssighment: Assignment = Assignment(assigmentName: "placeholder", detail: "placeholder", limitDate: Date(), duration: 0, className: "placeholder") //タップされた課題を入れる（課題の削除や、編集で使う）初期値はとりあえずで入れたもの意味はない。
     
+    let userid: String //userid
     
     var body: some View {
         
@@ -61,12 +61,16 @@ struct TaskManagementView: View {
                             .frame(width: CGFloat(screenWidth) - 40, height: 30)
                             
                             
+                            //自分の課題を取り出す
+                            let filtering = NSPredicate(format: "userName = %@", argumentArray: ["\(userid)"])
+                            let myAssignments: Results<Assignment> = assignments.filter(filtering)
+                            
                             List{
                                 //assignmentは予約語だったという・・・
-                                ForEach(assignments) { oneAssignment in
+                                ForEach(myAssignments) { oneAssignment in
                                     if oneAssignment.isFinished == isFinished{
                                         
-                                        //タスク詳細画面を呼び出す
+                                        //タスク詳細画面に移動できるviewを呼び出す
                                         HStack{
                                             TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected,isShowFinishPopUP: $isShowFinishPopUP)
                                             
@@ -82,7 +86,8 @@ struct TaskManagementView: View {
                                                             nowSelectedAssighment = oneAssignment
                                                         }else{
                                                             //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
-                                                            let realm = try! Realm()
+                                                            let user = realmApp.currentUser!
+                                                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                                                             let finishedAssignment = oneAssignment.thaw()!
                                                             try! realm.write {
                                                                 finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
@@ -109,28 +114,32 @@ struct TaskManagementView: View {
                             .frame(width: CGFloat(screenWidth)-40)
                             
                             
-                            //課題追加画面を呼び出す
-                            NavigationLink(destination: AddAssignment(state: $isAddTask), isActive: $isAddTask) {
-                                if #available(iOS 15.0, *) {
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .foregroundColor(.black)
-                                    }
-                                    .padding()
-                                    .buttonStyle(.bordered)
-                                } else {
-                                    // Fallback on earlier versions
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .border(.black, width: 1)
-                                            .foregroundColor(.black)
-                                            .background(Color.gray)
+                            if let realmUser = realmApp.currentUser{
+                                //課題追加画面を呼び出す
+                                NavigationLink(destination: AddAssignment(userid: userid,state: $isAddTask)
+                                    .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
+                                               , isActive: $isAddTask) {
+                                    if #available(iOS 15.0, *) {
+                                        Button (action:{
+                                            isAddTask = true
+                                        }){
+                                            Text("科目を追加する")
+                                                .padding()
+                                                .foregroundColor(.black)
+                                        }
+                                        .padding()
+                                        .buttonStyle(.bordered)
+                                    } else {
+                                        // Fallback on earlier versions
+                                        Button (action:{
+                                            isAddTask = true
+                                        }){
+                                            Text("科目を追加する")
+                                                .padding()
+                                                .border(.black, width: 1)
+                                                .foregroundColor(.black)
+                                                .background(Color.gray)
+                                        }
                                     }
                                 }
                             }
@@ -159,11 +168,14 @@ struct TaskManagementView: View {
     }
 }
 
-struct TaskManagementView_Previews: PreviewProvider {
-    static var previews: some View {
-        TaskManagementView()
-    }
-}
+
+//
+//struct TaskManagementView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TaskManagementView()
+//    }
+//}
+
 
 //課題の行一つ分のView
 struct TaskRow: View{
@@ -172,8 +184,9 @@ struct TaskRow: View{
     @Binding var isShowFinishPopUP: Bool //ポップアップを表示するかの判定用
     
     var body: some View{
-        
-        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+        let realmUser = realmApp.currentUser! 
+        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
+            .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
             ZStack(alignment: .leading){
                 Rectangle().fill(.gray)
                 let timeDay = (oneAssignment.duration/1440)
@@ -240,7 +253,8 @@ struct finishPopUpView: View{
                 Button(action: {
                     
                     //課題のisFinishedを置き換える
-                    let realm = try! Realm()
+                    let user = realmApp.currentUser!
+                    let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                     let finishedAssignment = nowSelectedAssignment.thaw()!
                     try! realm.write {
                         //所要時間、コメントの追加、完了状態の変更を行う
@@ -281,7 +295,8 @@ struct deletePopUpView: View{
                 
                 //決定ボタン。選択した要素を削除する
                 Button(action: {
-                    let realm = try! Realm()
+                    let user = realmApp.currentUser!
+                    let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                     let deletedAssignment = nowSelectedAssignment.thaw()!
                     try! realm.write {
                         realm.delete(deletedAssignment)

@@ -14,6 +14,9 @@ struct AddAssignment: View {
      が、（現在は）課題管理画面で表示するのは、「終了していない課題」な訳なのですが、とりあえず！！「終了したもの」「終了していないもの」を考えないで、全部課題管理画面で表示するようにしておこう！
      */
     @ObservedResults(Assignment.self) var assignments //課題のリスト
+    let userid:String
+    
+    
     let hours: [Int] = Array(0..<24)
     let minutes: [Int] = Array(0..<60)
     @State var SubjectName = "" //科目名
@@ -77,6 +80,7 @@ struct AddAssignment: View {
                     let tmpTime = Time[0]*24*60 + Time[1]*60 + Time[2]
                     //realmに追加するAssignmentオブジェクトを作成する。期限は現在入力できるようになっていないため、Date()をとりあえず使っている。
                     let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: Remarks,limitDate: Date(),duration: tmpTime,className: SubjectName)
+                    assignemtTemp.userName = userid
                     //realmに追加する
                     addAssignmentToRealm(oneAssignment: assignemtTemp)
                     

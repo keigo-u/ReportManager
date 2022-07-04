@@ -16,7 +16,9 @@ struct TaskDescriptionView: View {
      @persisted(Assignment.self)をselectedAssignemtの名前（もしくはid?）でフィルターしたものを表示するようにしたい。(なんとなくそっちの方が後から楽そう)
      */
     @Environment(\.presentationMode) var presentationMode //戻るボタンを作るために作成
-    var averageTime = 90
+    
+    @State var sumDuration: Int = 0
+    @State var averageTime = 90
     
     var selectedAssignment: Assignment //選択されたタスク
     @ObservedResults(Assignment.self) var assignments //課題のリスト
@@ -28,27 +30,35 @@ struct TaskDescriptionView: View {
     @Binding var state :Bool
     @Environment(\.dismiss) var dismiss
     
+
     var body: some View {
         
         let filtering = NSPredicate(format: "assignmentName = %@", argumentArray: ["\(selectedAssignment.assignmentName)"]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
         let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
         
+        let averageTime: Double = filtedList.average(ofProperty: "duration")!
+        let timeDay = String(format: "%.1f",(averageTime/1440))
+        let timeHour = String(format: "%.1f",(averageTime.truncatingRemainder(dividingBy: 1440))/60)
+        let timeMinute = String(format: "%.1f",averageTime.truncatingRemainder(dividingBy: 60))
         VStack {
             Text("課題詳細")
                 .font(.largeTitle)
             
-            Text("平均所要時間\(averageTime)分")
+            
+            Text("平均所要時間:約\(timeDay)日\(timeHour)時間\(timeMinute)分")
             
             Text("要素の名前:\(selectedAssignment.assignmentName)")
             
             List{
                 ForEach(filtedList) { element in
-                    
                     ZStack(alignment: .leading) {
+                        let timeDay = (element.duration/1440)
+                        let timeHour = (element.duration%1440)/60
+                        let timeMinute = element.duration%60
                         Rectangle().fill(.gray)
                         Text("""
                              \(element.userName)さん
-                             所要時間:\(element.duration)
+                             所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
                              備考:\(element.detail)
                              """)
                             .padding()
@@ -71,6 +81,9 @@ struct TaskDescriptionView: View {
             }
         }
     }
+    
+    
+    
 }
 /*
 struct TaskDescriptionView_Previews: PreviewProvider {
@@ -78,3 +91,4 @@ struct TaskDescriptionView_Previews: PreviewProvider {
         TaskDescriptionView()
     }
 }*/
+
