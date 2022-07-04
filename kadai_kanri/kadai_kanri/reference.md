@@ -67,6 +67,33 @@ orの書き方を知りたくて
 [SwiftUI「アラート(Alert)」が表示されない3つの原因](https://www.choge-blog.com/programming/swiftui%E3%80%8C%E3%82%A2%E3%83%A9%E3%83%BC%E3%83%88alert%E3%80%8D%E3%81%8C%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%81%AA%E3%81%843%E3%81%A4%E3%81%AE%E5%8E%9F%E5%9B%A0/)
 
 
+## realmデータ共有のために調べたもの！
+
+正直なんで動いているかわからない・・・何かトラブルがあったらもう何もすることはできない・・・
+
+[Swiftで小数点の桁数表示を調整する方法](https://ymgsapo.com/2022/01/07/swift-dicimal-format/)
+
+swiftuiでは関数が使える時と使えない時がある・・・違いは？
+
+[SwiftのFloat系の演算で余り演算子(%)が廃止、それに変わるメソッドはだるま落としと最寄駅](https://qiita.com/samekard/items/81e095832b1cde9b71ba)
+
+[List](https://www.mongodb.com/docs/realm-legacy/docs/swift/latest/api/Classes/List.html#/s:10RealmSwift4ListCA2A11AddableTypeRzrlE7averageqd__SgyAaDRd__lF)
+
+list.average()の使い方を見ていた。（が、全くわかっていない。戻り値をDoubleにしたらたまたまうまく動いた）
+
+[SwiftUI Argument passed to call that takes no arguments](https://stackoverflow.com/questions/68324357/swiftui-argument-passed-to-call-that-takes-no-arguments)
+
+initを使っているとselfをつけないといけなくなる？そもそもswiftの構文ちんぷんかんぷんだからわけわからんね
+
+[Sample realm sync with partition keys for different types (public, private, group)](https://www.mongodb.com/community/forums/t/sample-realm-sync-with-partition-keys-for-different-types-public-private-group/7251)
+
+[Partitions](https://www.mongodb.com/docs/atlas/app-services/sync/data-access-patterns/partitions/#std-label-sync-partitions)
+
+[MongoDB Realm ObservableObject, SwiftUI?](https://stackoverflow.com/questions/64509881/mongodb-realm-observableobject-swiftui)
+
+チュートリアルでデータを共有する時は、navigationlinkに.environmentなんたら〜ってやっていたけど、それ以外の方法。
+configrationを設定してあげれば、色々なpartitionを使えるようになるらしい。（がもう・・・全てのパーティションをallassighmentにしちゃっているけど・・・パーティションの意味ないよな・・・）
+
 
 # 困っていること
 
