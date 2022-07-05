@@ -92,6 +92,10 @@ struct AddAssignment: View {
                         .frame(width: width,height: (height/10))
                         .border(Color.gray)
                 }
+                Spacer()
+                Divider()
+                    .background(Color(hex: "8C8C8C"))
+                    .frame(height:2)
             }
         }
     }

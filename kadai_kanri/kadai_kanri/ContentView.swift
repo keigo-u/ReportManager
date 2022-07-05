@@ -52,10 +52,12 @@ struct TabViews: View{
     let username:String
     @State private var isAddTask: Bool = false
 
-    
     init(username:String){
-        UITabBar.appearance().backgroundColor = UIColor(red: 255, green: 140, blue: 140, alpha: 1) //タブの背景色を指定
+        //タブの背景色
+        UITabBar.appearance().backgroundColor = UIColor(red: 246/255, green: 239/255, blue: 231/255, alpha: 1)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
         self.username = username
+
     }
     
     var body: some View{
@@ -81,14 +83,6 @@ struct TabViews: View{
                         Image(systemName: "plus.app")
                         Text("課題追加")
                     }
-            }
-        }
-        .onAppear {
-            //タブの上の線を表示するのに必要らしい？
-            if #available(iOS 15.0, *) {
-                let appearance = UITabBarAppearance()
-                UITabBar.appearance().scrollEdgeAppearance = appearance
-                
             }
         }
         .accentColor(Color(hex: "D4DAD6"))

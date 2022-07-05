@@ -18,7 +18,7 @@ struct TaskDescriptionView: View {
     @Environment(\.presentationMode) var presentationMode //戻るボタンを作るために作成
     
     @State var sumDuration: Int = 0
-    @State var averageTime = 90
+    
     
     var selectedAssignment: Assignment //選択されたタスク
     @ObservedResults(Assignment.self) var assignments //課題のリスト
@@ -36,16 +36,20 @@ struct TaskDescriptionView: View {
         let filtering = NSPredicate(format: "assignmentName = %@ AND className = %@ AND isFinished = %@", argumentArray: ["\(selectedAssignment.assignmentName)","\(selectedAssignment.className)",true]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
         let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
         
-        let averageTime: Double = filtedList.average(ofProperty: "duration")!
-        let timeDay = String(format: "%.1f",(averageTime/1440))
-        let timeHour = String(format: "%.1f",(averageTime.truncatingRemainder(dividingBy: 1440))/60)
-        let timeMinute = String(format: "%.1f",averageTime.truncatingRemainder(dividingBy: 60))
+        
+        let averageTime: Double = filtedList.average(ofProperty: "duration") ?? 0
+        
+        
+        
         VStack {
             Text("課題詳細")
                 .font(.largeTitle)
             
             
-            Text("平均所要時間:約\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                let timeDay = String(format: "%.1f",(averageTime/1440))
+                let timeHour = String(format: "%.1f",(averageTime.truncatingRemainder(dividingBy: 1440))/60)
+                let timeMinute = String(format: "%.1f",averageTime.truncatingRemainder(dividingBy: 60))
+                Text("平均所要時間:約\(timeDay)日\(timeHour)時間\(timeMinute)分")
             
             Text("要素の名前:\(selectedAssignment.assignmentName)")
             
