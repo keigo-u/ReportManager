@@ -33,7 +33,7 @@ struct TaskDescriptionView: View {
 
     var body: some View {
         
-        let filtering = NSPredicate(format: "assignmentName = %@", argumentArray: ["\(selectedAssignment.assignmentName)"]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
+        let filtering = NSPredicate(format: "assignmentName = %@ AND className = %@ AND isFinished = %@", argumentArray: ["\(selectedAssignment.assignmentName)","\(selectedAssignment.className)",true]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
         let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
         
         let averageTime: Double = filtedList.average(ofProperty: "duration")!
