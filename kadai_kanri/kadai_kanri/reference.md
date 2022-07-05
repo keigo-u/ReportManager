@@ -95,6 +95,19 @@ initを使っているとselfをつけないといけなくなる？そもそも
 configrationを設定してあげれば、色々なpartitionを使えるようになるらしい。（がもう・・・全てのパーティションをallassighmentにしちゃっているけど・・・パーティションの意味ないよな・・・）
 
 
+[【SwiftUI】Fatal error: Unexpectedly found nil while unwrapping an Optional valueの対応方法を日本語で解説](https://tomato-develop.com/swiftui-fatal-error-unexpectedly-found-nil-while-unwrapping-an-optional-value/)
+
+[Swift Optional 型についてのまとめ Ver2](https://qiita.com/cotrpepe/items/518c4476ca957a42f5f1)
+
+nilだいいきらい！！！！！！
+
+[Git コンフリクト解消手順](https://qiita.com/crarrry/items/c5964512e21e383b73da)
+
+[第4話 コンフリクトは怖くない！解決方法【連載】マンガでわかるGit ～コマンド編～](https://www.r-staffing.co.jp/engineer/entry/20190927_1)
+
+
+[Gitでよくあるハプニングの対策とコマンドメモ](https://qiita.com/gilly/items/d590528c8309b8e37562)
+
 # 困っていること
 
 
