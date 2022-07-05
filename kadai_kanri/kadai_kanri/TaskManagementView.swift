@@ -24,22 +24,30 @@ struct TaskManagementView: View {
     
     @State private var nowSelectedAssighment: Assignment = Assignment(assigmentName: "placeholder", detail: "placeholder", limitDate: Date(), duration: 0, className: "placeholder") //タップされた課題を入れる（課題の削除や、編集で使う）初期値はとりあえずで入れたもの意味はない。
     
+    @State private var comment: String = ""
+    
     
     var body: some View {
         
-        let bounds = UIScreen.main.bounds
-        let screenWidth = Int(bounds.width)
-        let screenHeight = Int(bounds.height)
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
         
         ZStack{
-            
             NavigationView {
                 ZStack{
                     Color.light_beige.ignoresSafeArea()
                     VStack{
-                        Text("課題管理")
-                            .padding()
-                            .font(.title)
+                        Spacer()
+                        ZStack {
+                            Color.beige
+                            Text("課題管理")
+                                .padding()
+                                .font(.title)
+                        }
+                        .frame(height: 80)
+                        .border(.gray, width: 3)
+                        
+                        Spacer()
                         
                         VStack{
                             HStack{
@@ -50,6 +58,7 @@ struct TaskManagementView: View {
                                 }
                                 .padding(.trailing, 20)
                                 .foregroundColor(.black)
+                                
                                 Button(action: {
                                     isFinished = true
                                 }){
@@ -58,17 +67,26 @@ struct TaskManagementView: View {
                                 .padding(.leading, 20)
                                 .foregroundColor(.black)
                             }
-                            .frame(width: CGFloat(screenWidth) - 40, height: 30)
+                            .padding()
                             
-                            
-                            List{
+                            VStack {
                                 //assignmentは予約語だったという・・・
                                 ForEach(assignments) { oneAssignment in
                                     if oneAssignment.isFinished == isFinished{
                                         
                                         //タスク詳細画面を呼び出す
                                         HStack{
-                                            TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected,isShowFinishPopUP: $isShowFinishPopUP)
+                                            NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+                                                let timeDay = (oneAssignment.duration/1440)
+                                                let timeHour = (oneAssignment.duration%1440)/60
+                                                let timeMinute = oneAssignment.duration%60
+                                                Text("""
+                                                    課題名:\(oneAssignment.assignmentName)
+                                                    所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                                                    """)
+                                                    .foregroundColor(Color.black)
+                                            }
+                                            .navigationBarHidden(true)
                                             
                                             //左のチェックマークとゴミ箱
                                             VStack{
@@ -93,56 +111,74 @@ struct TaskManagementView: View {
                                                     }
                                                 
                                                 //ゴミ箱、タップすると削除される
-                                                Image(systemName: "trash.fill")
-                                                    .onTapGesture(count: 1) {
-                                                        isShowDeletePopUP = true
-                                                        nowSelectedAssighment = oneAssignment
-                                                        
-                                                    }
+                                                Button(action: {
+                                                    isShowDeletePopUP.toggle()
+                                                    
+                                                }) {
+                                                    Image(systemName: "trash.fill")
+                                                        .foregroundColor(Color.gray)
+                                                }
+                                                .alert(isPresented: $isShowDeletePopUP) {
+                                                    Alert(title: Text("この課題を削除しますか？"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .destructive(Text("削除"), action: {
+                                                        let realm = try! Realm()
+                                                        let deletedAssignment = oneAssignment.thaw()!
+                                                        try! realm.write {
+                                                            realm.delete(deletedAssignment)
+                                                        }
+                                                    }))
+                                                }
                                             }
                                         }
-                                    }
-                                    
-                                }
-                            }
-                            .listStyle(InsetListStyle())
-                            .frame(width: CGFloat(screenWidth)-40)
-                            
-                            
-                            //課題追加画面を呼び出す
-                            NavigationLink(destination: AddAssignment(state: $isAddTask), isActive: $isAddTask) {
-                                if #available(iOS 15.0, *) {
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .foregroundColor(.black)
-                                    }
-                                    .padding()
-                                    .buttonStyle(.bordered)
-                                } else {
-                                    // Fallback on earlier versions
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .border(.black, width: 1)
-                                            .foregroundColor(.black)
-                                            .background(Color.gray)
+                                        .padding()
+                                        .background(Color.light_beige)
                                     }
                                 }
                             }
-                            Divider()
-                                .background(Color(hex: "8C8C8C"))
-                                .frame(height:2)
+                            .padding()
+                            .background(Color.light_green)
                         }
+                        .background(Color.light_green)
+                        .frame(width: screenWidth-80)
+                        .padding(10)
+                        
+                        Spacer()
+                            
+                        //課題追加画面を呼び出す
+                        NavigationLink(destination: AddAssignment(state: $isAddTask), isActive: $isAddTask) {
+                            if #available(iOS 15.0, *) {
+                                Button (action:{
+                                    isAddTask = true
+                                }){
+                                    Text("科目を追加する")
+                                        .padding()
+                                        .foregroundColor(.black)
+                                }
+                                .padding()
+                                .buttonStyle(.bordered)
+                            } else {
+                                // Fallback on earlier versions
+                                Button (action:{
+                                    isAddTask = true
+                                }){
+                                    Text("科目を追加する")
+                                        .padding()
+                                        .border(.black, width: 1)
+                                        .foregroundColor(.black)
+                                        .background(Color.gray)
+                                }
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        Divider()
+                            .background(Color(hex: "8C8C8C"))
+                            .frame(height:2)
                     }
                 }
             }
             
-            if isShowFinishPopUP || isShowDeletePopUP{
+            if isShowFinishPopUP {
                 //色を重ねることによって画面を暗くする
                 Rectangle()
                     .fill(Color.black)
@@ -154,10 +190,6 @@ struct TaskManagementView: View {
             if isShowFinishPopUP{
                 finishPopUpView(isShowFinishPopUP: $isShowFinishPopUP,nowSelectedAssignment: nowSelectedAssighment)
             }
-            
-            if isShowDeletePopUP{
-                deletePopUpView(isShowDeletePopUP: $isShowDeletePopUP, nowSelectedAssignment: nowSelectedAssighment)
-            }
         }
     }
 }
@@ -165,30 +197,6 @@ struct TaskManagementView: View {
 struct TaskManagementView_Previews: PreviewProvider {
     static var previews: some View {
         TaskManagementView()
-    }
-}
-
-//課題の行一つ分のView
-struct TaskRow: View{
-    var oneAssignment: Assignment
-    @Binding var isSelected: Bool
-    @Binding var isShowFinishPopUP: Bool //ポップアップを表示するかの判定用
-    
-    var body: some View{
-        
-        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
-            ZStack(alignment: .leading){
-                let timeDay = (oneAssignment.duration/1440)
-                let timeHour = (oneAssignment.duration%1440)/60
-                let timeMinute = oneAssignment.duration%60
-                Text("""
-                    課題名:\(oneAssignment.assignmentName)
-                    所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                    """)
-                    .foregroundColor(Color.black)
-            }
-        }
-        .navigationBarHidden(true)
     }
 }
 
@@ -227,6 +235,8 @@ struct finishPopUpView: View{
                 TextField("",text: $inputComment)
             }
             
+            Divider()
+            
             //ボタン
             HStack{
                 Button(action: {
@@ -255,45 +265,7 @@ struct finishPopUpView: View{
                 }
             }
         }
+        .padding()
         .background(Color.white)
-        
-        
-        
     }
-}
-
-struct deletePopUpView: View{
-    @Binding var isShowDeletePopUP: Bool //ポップアップを表示するかの判定用
-    var nowSelectedAssignment: Assignment //現在選択されている課題
-    
-    var body: some View{
-        VStack{
-            Text("この課題を削除しますか?")
-            
-            HStack{
-                //キャンセルボタン
-                Button(action: {
-                    isShowDeletePopUP.toggle()
-                }){
-                    Text("キャンセル")
-                }
-                
-                //決定ボタン。選択した要素を削除する
-                Button(action: {
-                    let realm = try! Realm()
-                    let deletedAssignment = nowSelectedAssignment.thaw()!
-                    try! realm.write {
-                        realm.delete(deletedAssignment)
-                    }
-                    
-                    isShowDeletePopUP.toggle()
-                }){
-                    Text("OK")
-                }
-            }
-        }.background(Color.white)
-        
-    }
-    
-    
 }

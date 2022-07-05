@@ -16,8 +16,8 @@ struct ClassDescription: View {
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     @ObservedResults(TimeTableElement.self)  var timeTableElements //時間割モデル
     
-    let day: String //受け取った曜日
-    let period: Int //受け取った時間
+    @Binding var day: String //受け取った曜日
+    @Binding var period: Int //受け取った時間
     @Binding var state: Bool //遷移状態
     
     @State private var isSelected: Bool = false
@@ -63,7 +63,7 @@ struct ClassDescription: View {
                                 Image(systemName: "person.fill")
                                 Text("担当教員")
                             }
-                            Text("test"/*selectedClass[0].teacher*/)
+                            Text(selectedClass[0].teacher)
                         }
                         Divider()
                         HStack {
@@ -71,8 +71,8 @@ struct ClassDescription: View {
                                 Image(systemName: "clock.fill")
                                 Text("時間")
                             }
-                            Text("月"/*selectedClass[0].dayOfWeek*/)
-                            Text(String(1/*selectedClass[0].period*/))
+                            Text(selectedClass[0].dayOfWeek)
+                            Text("\(selectedClass[0].period)")
                         }
                         Divider()
                         HStack {
@@ -80,7 +80,7 @@ struct ClassDescription: View {
                                 Image(systemName: "paperplane.fill")
                                 Text("場所")
                             }
-                            Text("オンライン"/*selectedClass[0].place*/)
+                            Text(selectedClass[0].place)
                         }
                     }
                     .padding()
@@ -98,7 +98,17 @@ struct ClassDescription: View {
                         ForEach(filtedAssignmentsList) { oneAssignment in
                             //タスク詳細画面を呼び出す
                             HStack{
-                                TaskRow(oneAssignment: oneAssignment, isSelected: $isSelected,isShowFinishPopUP: $isShowFinishPopUP)
+                                NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+                                    let timeDay = (oneAssignment.duration/1440)
+                                    let timeHour = (oneAssignment.duration%1440)/60
+                                    let timeMinute = oneAssignment.duration%60
+                                    Text("""
+                                        課題名:\(oneAssignment.assignmentName)
+                                        所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                                        """)
+                                        .foregroundColor(Color.black)
+                                }
+                                .navigationBarHidden(true)
                                 
                                 //左のチェックマークとゴミ箱
                                 VStack{
@@ -171,10 +181,10 @@ struct ClassDescription: View {
         if isShowFinishPopUP{
             finishPopUpView(isShowFinishPopUP: $isShowFinishPopUP,nowSelectedAssignment: nowSelectedAssighment)
         }
-        
+        /*
         if isShowDeletePopUP{
             deletePopUpView(isShowDeletePopUP: $isShowDeletePopUP, nowSelectedAssignment: nowSelectedAssighment)
-        }
+        }*/
     }
 }
 

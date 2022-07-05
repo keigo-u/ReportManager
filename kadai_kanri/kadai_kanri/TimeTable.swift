@@ -16,6 +16,9 @@ struct TimeTable: View {
     @State private var isdsc: Bool = false
     @State private var showDeleteAlert: Bool = false //登録されていない科目を削除されそうな時に表示するアラート用
     
+    @State var dayOfWeek: String = ""
+    @State var period: Int = 0
+    
     var body: some View {
         let days: [String] = ["月", "火", "水", "木", "金"]
         let width: CGFloat = 55
@@ -34,7 +37,7 @@ struct TimeTable: View {
                             .padding()
                     }
                     .frame(height: 80)
-                    .border(.gray, width: 2)
+                    .border(.gray, width: 3)
                     
                     Spacer()
                     
@@ -70,27 +73,39 @@ struct TimeTable: View {
                                     let presentText: String = filtedList.count != 0 ? filtedList[0].className : "" //結果があるときはフィルタリング結果の0番目、ないときは何も表示しない
                                     
                                     //実際にViewを作る
-                                    NavigationLink(destination: ClassDescription(day: day, period: pe, state: $isdsc), isActive: $isdsc) { Button(action:{
-                                        isdsc = true
-                                    }) {
-                                        TimeTableCell(width: width, height: height, className: presentText)
-                                    } }
-                                    .contextMenu(menuItems:
-                                                    {
-                                        //長押しして科目を削除できるようにする
-                                        Button(action: {
-                                            if filtedList.count == 0{
-                                                self.showDeleteAlert = true
-                                            }
-                                            else{
-                                                $timeTableElements.remove(filtedList[0])
-                                            }
-                                        })
-                                        {
-                                            Text("科目を削除する")
+                                    VStack {
+                                        if filtedList.count != 0 { //科目があれば詳細を表示
+                                            NavigationLink(destination: ClassDescription(day: $dayOfWeek, period: $period, state: $isdsc), isActive: $isdsc) { Button(action:{
+                                                isdsc = true
+                                                dayOfWeek = day
+                                                period = pe
+                                            }) {
+                                                TimeTableCell(width: width, height: height, className: presentText)
+                                            } }
+                                            .contextMenu(menuItems:
+                                                            {
+                                                //長押しして科目を削除できるようにする
+                                                Button(action: {
+                                                    if filtedList.count == 0{
+                                                        self.showDeleteAlert = true
+                                                    }
+                                                    else{
+                                                        $timeTableElements.remove(filtedList[0])
+                                                    }
+                                                })
+                                                {
+                                                    Text("科目を削除する")
+                                                }
+                                                
+                                            })
+                                        } else { //なければ新規追加
+                                            NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) { Button(action:{
+                                                isadd = true
+                                            }) {
+                                                TimeTableCell(width: width, height: height, className: presentText)
+                                            } }
                                         }
-                                        
-                                    })
+                                    }
                                 }
                             }
                         }
