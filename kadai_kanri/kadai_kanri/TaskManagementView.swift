@@ -23,9 +23,9 @@ struct TaskManagementView: View {
     
     @State private var nowSelectedAssighment: Assignment = Assignment(assigmentName: "placeholder", detail: "placeholder", limitDate: Date(), duration: 0, className: "placeholder") //タップされた課題を入れる（課題の削除や、編集で使う）初期値はとりあえずで入れたもの意味はない。
     
-
+    
     let userid: String //userid
-
+    
     
     var body: some View {
         
@@ -69,15 +69,15 @@ struct TaskManagementView: View {
                             }
                             .padding()
                             
-
+                            
                             //自分の課題を取り出す
                             let filtering = NSPredicate(format: "userName = %@", argumentArray: ["\(userid)"])
                             let myAssignments: Results<Assignment> = assignments.filter(filtering)
                             
-                            List{
-
+                            
+                            
                             VStack {
-
+                                
                                 //assignmentは予約語だったという・・・
                                 ForEach(myAssignments) { oneAssignment in
                                     if oneAssignment.isFinished == isFinished{
@@ -87,16 +87,16 @@ struct TaskManagementView: View {
                                             if let realmUser = realmApp.currentUser{
                                                 NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
                                                     .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
-                                                    let timeDay = (oneAssignment.duration/1440)
-                                                    let timeHour = (oneAssignment.duration%1440)/60
-                                                    let timeMinute = oneAssignment.duration%60
-                                                    Text("""
+                                                        let timeDay = (oneAssignment.duration/1440)
+                                                        let timeHour = (oneAssignment.duration%1440)/60
+                                                        let timeMinute = oneAssignment.duration%60
+                                                        Text("""
                                                         課題名:\(oneAssignment.assignmentName)
                                                         所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
                                                         """)
                                                         .foregroundColor(Color.black)
-                                                }
-                                                .navigationBarHidden(true)
+                                                    }
+                                                    .navigationBarHidden(true)
                                             }
                                             
                                             //左のチェックマークとゴミ箱
@@ -155,39 +155,39 @@ struct TaskManagementView: View {
                         .padding(10)
                         
                         Spacer()
-                            
-
-                            if let realmUser = realmApp.currentUser{
-                                //課題追加画面を呼び出す
-                                NavigationLink(destination: AddAssignment(userid: userid,state: $isAddTask)
-                                    .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
-                                               , isActive: $isAddTask) {
-                                    if #available(iOS 15.0, *) {
-                                        Button (action:{
-                                            isAddTask = true
-                                        }){
-                                            Text("科目を追加する")
-                                                .padding()
-                                                .foregroundColor(.black)
-                                        }
-                                        .padding()
-                                        .buttonStyle(.bordered)
-                                    } else {
-                                        // Fallback on earlier versions
-                                        Button (action:{
-                                            isAddTask = true
-                                        }){
-                                            Text("科目を追加する")
-                                                .padding()
-                                                .border(.black, width: 1)
-                                                .foregroundColor(.black)
-                                                .background(Color.gray)
-                                        }
+                        
+                        
+                        if let realmUser = realmApp.currentUser{
+                            //課題追加画面を呼び出す
+                            NavigationLink(destination: AddAssignment(userid: userid,state: $isAddTask)
+                                .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
+                                           , isActive: $isAddTask) {
+                                if #available(iOS 15.0, *) {
+                                    Button (action:{
+                                        isAddTask = true
+                                    }){
+                                        Text("科目を追加する")
+                                            .padding()
+                                            .foregroundColor(.black)
                                     }
-
+                                    .padding()
+                                    .buttonStyle(.bordered)
+                                } else {
+                                    // Fallback on earlier versions
+                                    Button (action:{
+                                        isAddTask = true
+                                    }){
+                                        Text("科目を追加する")
+                                            .padding()
+                                            .border(.black, width: 1)
+                                            .foregroundColor(.black)
+                                            .background(Color.gray)
+                                    }
                                 }
+                                
                             }
                         }
+                        
                         
                         Spacer()
                         
