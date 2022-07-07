@@ -10,6 +10,8 @@ import RealmSwift
 
 let screenWidth = UIScreen.main.bounds.size.width
 let screenHeight = UIScreen.main.bounds.size.height
+let rate_width = screenWidth/390
+let rate_height = screenHeight/844
 
 struct ClassDescription: View {
     
@@ -49,108 +51,111 @@ struct ClassDescription: View {
                         .font(.title)
                         .padding()
                 }
-                .frame(width: screenWidth-60, height: 80)
+                .frame(width: screenWidth-(60*rate_width), height: 80*rate_width)
                 .border(.gray, width: 5)
                 
                 Spacer()
                 
-                VStack {
-                    Text("講義の詳細")
-                        .padding(.top, 10)
+                ScrollView{
+                
                     VStack {
-                        HStack {
-                            VStack {
-                                Image(systemName: "person.fill")
-                                Text("担当教員")
-                            }
-                            Text(selectedClass[0].teacher)
-                        }
-                        Divider()
-                        HStack {
-                            VStack {
-                                Image(systemName: "clock.fill")
-                                Text("時間")
-                            }
-                            Text(selectedClass[0].dayOfWeek)
-                            Text("\(selectedClass[0].period)")
-                        }
-                        Divider()
-                        HStack {
-                            VStack {
-                                Image(systemName: "paperplane.fill")
-                                Text("場所")
-                            }
-                            Text(selectedClass[0].place)
-                        }
-                    }
-                    .padding()
-                    .background(Color.light_green)
-                }
-                .frame(width: screenWidth-60)
-                .background(Color.beige)
-                
-                Spacer()
-                
-                VStack {
-                    Text("課題一覧")
-                        .padding(.top, 10)
-                    ScrollView {
-                        ForEach(filtedAssignmentsList) { oneAssignment in
-                            //タスク詳細画面を呼び出す
-                            HStack{
-                                NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
-                                    let timeDay = (oneAssignment.duration/1440)
-                                    let timeHour = (oneAssignment.duration%1440)/60
-                                    let timeMinute = oneAssignment.duration%60
-                                    Text("""
-                                        課題名:\(oneAssignment.assignmentName)
-                                        所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                        """)
-                                        .foregroundColor(Color.black)
+                        Text("講義の詳細")
+                            .padding(.top, 10*rate_width)
+                        VStack {
+                            HStack {
+                                VStack {
+                                    Image(systemName: "person.fill")
+                                    Text("担当教員")
                                 }
-                                .navigationBarHidden(true)
-                                
-                                //左のチェックマークとゴミ箱
-                                VStack{
-                                    //チェックボックス、タップすると完了済みに移動
-                                    Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
-                                        .onTapGesture(count: 1){
-                                            
-                                            //ポップアップを表示する（値の変更はポップアップのviewで行う）
-                                            if oneAssignment.isFinished == false{
-                                                isShowFinishPopUP = true
-                                                nowSelectedAssighment = oneAssignment
-                                            }else{
-                                                //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
-                                                let realm = try! Realm()
-                                                let finishedAssignment = oneAssignment.thaw()!
-                                                try! realm.write {
-                                                    finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
-                                                }
-                                            }
-                                            
-                                            
-                                        }
+                                Text(selectedClass[0].teacher)
+                            }
+                            Divider()
+                            HStack {
+                                VStack {
+                                    Image(systemName: "clock.fill")
+                                    Text("時間")
+                                }
+                                Text(selectedClass[0].dayOfWeek)
+                                Text("\(selectedClass[0].period)")
+                            }
+                            Divider()
+                            HStack {
+                                VStack {
+                                    Image(systemName: "paperplane.fill")
+                                    Text("場所")
+                                }
+                                Text(selectedClass[0].place)
+                            }
+                        }
+                        .padding()
+                        .background(Color.light_green)
+                    }
+                    .frame(width: screenWidth-(60)*rate_width)
+                    .background(Color.beige)
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("課題一覧")
+                            .padding(.top, 10)
+                        ScrollView {
+                            ForEach(filtedAssignmentsList) { oneAssignment in
+                                //タスク詳細画面を呼び出す
+                                HStack{
+                                    NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
+                                        let timeDay = (oneAssignment.duration/1440)
+                                        let timeHour = (oneAssignment.duration%1440)/60
+                                        let timeMinute = oneAssignment.duration%60
+                                        Text("""
+                                            課題名:\(oneAssignment.assignmentName)
+                                            所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                                            """)
+                                            .foregroundColor(Color.black)
+                                    }
+                                    .navigationBarHidden(true)
                                     
-                                    //ゴミ箱、タップすると削除される
-                                    Image(systemName: "trash.fill")
-                                        .onTapGesture(count: 1) {
-                                            isShowDeletePopUP = true
-                                            nowSelectedAssighment = oneAssignment
-                                            
-                                        }
+                                    //左のチェックマークとゴミ箱
+                                    VStack{
+                                        //チェックボックス、タップすると完了済みに移動
+                                        Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
+                                            .onTapGesture(count: 1){
+                                                
+                                                //ポップアップを表示する（値の変更はポップアップのviewで行う）
+                                                if oneAssignment.isFinished == false{
+                                                    isShowFinishPopUP = true
+                                                    nowSelectedAssighment = oneAssignment
+                                                }else{
+                                                    //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
+                                                    let realm = try! Realm()
+                                                    let finishedAssignment = oneAssignment.thaw()!
+                                                    try! realm.write {
+                                                        finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
+                                                    }
+                                                }
+                                                
+                                                
+                                            }
+                                        
+                                        //ゴミ箱、タップすると削除される
+                                        Image(systemName: "trash.fill")
+                                            .onTapGesture(count: 1) {
+                                                isShowDeletePopUP = true
+                                                nowSelectedAssighment = oneAssignment
+                                                
+                                            }
+                                    }
                                 }
+                                .padding()
+                                .background(Color.light_beige)
                             }
-                            .padding()
-                            .background(Color.light_beige)
                         }
+                        .frame(width: screenWidth-80)
+                        .padding(10)
+                        .background(Color.light_green)
                     }
-                    .frame(width: screenWidth-80)
-                    .padding(10)
-                    .background(Color.light_green)
+                    .frame(width: screenWidth-60, height: 220)
+                    .background(Color.beige)
                 }
-                .frame(width: screenWidth-60, height: 220)
-                .background(Color.beige)
                 
                 Spacer()
                 
