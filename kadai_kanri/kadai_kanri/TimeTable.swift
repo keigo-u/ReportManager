@@ -23,6 +23,10 @@ struct TimeTable: View {
         let days: [String] = ["月", "火", "水", "木", "金"]
         let width: CGFloat = 55
         let height: CGFloat = 75
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
         
         NavigationView {
             ZStack {
@@ -36,81 +40,82 @@ struct TimeTable: View {
                             .font(.title)
                             .padding()
                     }
-                    .frame(height: 80)
+                    .frame(height: 80*rate_height)
                     .border(.gray, width: 3)
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Text("")
-                            .frame(width: 30, height: 60)
-                            .background(Color.light_green)
-                        ForEach(days, id: \.self) { day in
-                            Text("\(day)")
-                                .frame(width: width, height: 60)
+                    ScrollView{
+                        Spacer()
+                        
+                        HStack {
+                            Text("")
+                                .frame(width: 30*rate_width, height: 60*rate_width)
                                 .background(Color.light_green)
-                        }
-                    }
-                    
-                    HStack {
-                        VStack {
-                            ForEach((1...5), id: \.self) { index in
-                                Text("\(index)")
-                                    .frame(width: 30, height: height)
+                            ForEach(days, id: \.self) { day in
+                                Text("\(day)")
+                                    .frame(width: width*rate_width, height: 60*rate_width)
                                     .background(Color.light_green)
                             }
                         }
-                        //曜日ごとにまとめて作りHStackで並べている
-                        ForEach(days, id: \.self) {day in
+                        
+                        HStack {
                             VStack {
-                                
-                                ForEach((1...5), id: \.self){ pe in
+                                ForEach((1...5), id: \.self) { index in
+                                    Text("\(index)")
+                                        .frame(width: 30*rate_width, height: height*rate_width)
+                                        .background(Color.light_green)
+                                }
+                            }
+                            //曜日ごとにまとめて作りHStackで並べている
+                            ForEach(days, id: \.self) {day in
+                                VStack {
                                     
-                                    //つっら・・・ここのpeをstringで渡しただけで、（右のプレビューでは）特にエラーなく落ちてめっちゃ時間取られた・・・
-                                    let filtering = NSPredicate(format: "dayOfWeek = %@ AND period = %@", argumentArray: ["\(day)",pe]) //フィルタリングの条件を作成（曜日と何限目か指定）
-                                    let filtedList: Results<TimeTableElement> = timeTableElements.filter(filtering) //フィルタリング結果が入る？。結果は一件だけのはず！
-                                    
-                                    let presentText: String = filtedList.count != 0 ? filtedList[0].className : "" //結果があるときはフィルタリング結果の0番目、ないときは何も表示しない
-                                    
-                                    //実際にViewを作る
-                                    VStack {
-                                        if filtedList.count != 0 { //科目があれば詳細を表示
-                                            NavigationLink(destination: ClassDescription(day: $dayOfWeek, period: $period, state: $isdsc), isActive: $isdsc) { Button(action:{
-                                                isdsc = true
-                                                dayOfWeek = day
-                                                period = pe
-                                            }) {
-                                                TimeTableCell(width: width, height: height, className: presentText)
-                                            } }
-                                            .contextMenu(menuItems:
-                                                            {
-                                                //長押しして科目を削除できるようにする
-                                                Button(action: {
-                                                    if filtedList.count == 0{
-                                                        self.showDeleteAlert = true
+                                    ForEach((1...5), id: \.self){ pe in
+                                        
+                                        //つっら・・・ここのpeをstringで渡しただけで、（右のプレビューでは）特にエラーなく落ちてめっちゃ時間取られた・・・
+                                        let filtering = NSPredicate(format: "dayOfWeek = %@ AND period = %@", argumentArray: ["\(day)",pe]) //フィルタリングの条件を作成（曜日と何限目か指定）
+                                        let filtedList: Results<TimeTableElement> = timeTableElements.filter(filtering) //フィルタリング結果が入る？。結果は一件だけのはず！
+                                        
+                                        let presentText: String = filtedList.count != 0 ? filtedList[0].className : "" //結果があるときはフィルタリング結果の0番目、ないときは何も表示しない
+                                        
+                                        //実際にViewを作る
+                                        VStack {
+                                            if filtedList.count != 0 { //科目があれば詳細を表示
+                                                NavigationLink(destination: ClassDescription(day: $dayOfWeek, period: $period, state: $isdsc), isActive: $isdsc) { Button(action:{
+                                                    isdsc = true
+                                                    dayOfWeek = day
+                                                    period = pe
+                                                }) {
+                                                    TimeTableCell(width: width*rate_width, height: height*rate_width, className: presentText)
+                                                } }
+                                                .contextMenu(menuItems:
+                                                                {
+                                                    //長押しして科目を削除できるようにする
+                                                    Button(action: {
+                                                        if filtedList.count == 0{
+                                                            self.showDeleteAlert = true
+                                                        }
+                                                        else{
+                                                            $timeTableElements.remove(filtedList[0])
+                                                        }
+                                                    })
+                                                    {
+                                                        Text("科目を削除する")
                                                     }
-                                                    else{
-                                                        $timeTableElements.remove(filtedList[0])
-                                                    }
+                                                    
                                                 })
-                                                {
-                                                    Text("科目を削除する")
-                                                }
-                                                
-                                            })
-                                        } else { //なければ新規追加
-                                            NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) { Button(action:{
-                                                isadd = true
-                                            }) {
-                                                TimeTableCell(width: width, height: height, className: presentText)
-                                            } }
+                                            } else { //なければ新規追加
+                                                NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) { Button(action:{
+                                                    isadd = true
+                                                }) {
+                                                    TimeTableCell(width: width*rate_width, height: height*rate_width, className: presentText)
+                                                } }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        .alert("削除する科目はありません",isPresented: $showDeleteAlert,actions: {})
                     }
-                    .alert("削除する科目はありません",isPresented: $showDeleteAlert,actions: {})
                     Spacer()
                     
                     NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) {
@@ -123,12 +128,11 @@ struct TimeTable: View {
                                 .foregroundColor(.black)
                                 .background(Color.light_green)
                         }
-                        .frame(width: 200)
+                        .frame(width: 200*rate_width)
                         .compositingGroup()        // Viewの要素をグループ化
                         .shadow(radius: 3, y: 5)
                     }
                     .navigationBarHidden(true)
-                    
                     
                     Spacer()
                     Divider()

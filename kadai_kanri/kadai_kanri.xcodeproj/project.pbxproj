@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AFD8F43E28740C0900F33CDE /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD8F43D28740C0900F33CDE /* ScrollView.swift */; };
+		AFFADA5B2876A27D009C1EC9 /* KeyboardObserving in Frameworks */ = {isa = PBXBuildFile; productRef = AFFADA5A2876A27D009C1EC9 /* KeyboardObserving */; };
+		AFFADA5E2876A29C009C1EC9 /* KeyboardObserving in Frameworks */ = {isa = PBXBuildFile; productRef = AFFADA5D2876A29C009C1EC9 /* KeyboardObserving */; };
 		B90CAFAD2836846D00E860B5 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAFAC2836846D00E860B5 /* AddCell.swift */; };
 		B90CAFAF28369D4E00E860B5 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAFAE28369D4E00E860B5 /* RadioButton.swift */; };
 		B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF67283F45DF00DDE610 /* AddAssignment.swift */; };
@@ -29,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AFD8F43D28740C0900F33CDE /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
 		B90CAFAC2836846D00E860B5 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
 		B90CAFAE28369D4E00E860B5 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		B932AF67283F45DF00DDE610 /* AddAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAssignment.swift; sourceTree = "<group>"; };
@@ -58,6 +62,8 @@
 				B98CB1542851C2F000D3ED3C /* Realm in Frameworks */,
 				B99D98EE284889A800FDD848 /* (null) in Frameworks */,
 				B99D98EC284889A800FDD848 /* (null) in Frameworks */,
+				AFFADA5B2876A27D009C1EC9 /* KeyboardObserving in Frameworks */,
+				AFFADA5E2876A29C009C1EC9 /* KeyboardObserving in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +113,7 @@
 				D59D898D2855A0680028A4AE /* memo.md */,
 				B9FCCC092870941D008845C2 /* ClassDescription.swift */,
 				B9FCCC0B2871D7FE008845C2 /* TextFieldAlert.swift */,
+				AFD8F43D28740C0900F33CDE /* ScrollView.swift */,
 			);
 			path = kadai_kanri;
 			sourceTree = "<group>";
@@ -147,6 +154,8 @@
 			packageProductDependencies = (
 				B98CB1532851C2F000D3ED3C /* Realm */,
 				B98CB1552851C2F000D3ED3C /* RealmSwift */,
+				AFFADA5A2876A27D009C1EC9 /* KeyboardObserving */,
+				AFFADA5D2876A29C009C1EC9 /* KeyboardObserving */,
 			);
 			productName = kadai_kanri;
 			productReference = B9B1AE9F281131160059EE02 /* kadai_kanri.app */;
@@ -178,6 +187,8 @@
 			mainGroup = B9B1AE96281131160059EE02;
 			packageReferences = (
 				B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */,
+				AFFADA592876A27D009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */,
+				AFFADA5C2876A29C009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */,
 			);
 			productRefGroup = B9B1AEA0281131160059EE02 /* Products */;
 			projectDirPath = "";
@@ -206,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */,
+				AFD8F43E28740C0900F33CDE /* ScrollView.swift in Sources */,
 				D5F7574E28488BB60097B803 /* testfile.swift in Sources */,
 				B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */,
 				B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */,
@@ -426,6 +438,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AFFADA592876A27D009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nickffox/KeyboardObserving";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		AFFADA5C2876A29C009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nickffox/KeyboardObserving";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
@@ -437,6 +465,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AFFADA5A2876A27D009C1EC9 /* KeyboardObserving */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFFADA592876A27D009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */;
+			productName = KeyboardObserving;
+		};
+		AFFADA5D2876A29C009C1EC9 /* KeyboardObserving */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFFADA592876A27D009C1EC9 /* XCRemoteSwiftPackageReference "KeyboardObserving" */;
+			productName = KeyboardObserving;
+		};
 		B98CB1532851C2F000D3ED3C /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B98CB1522851C2F000D3ED3C /* XCRemoteSwiftPackageReference "realm-swift" */;

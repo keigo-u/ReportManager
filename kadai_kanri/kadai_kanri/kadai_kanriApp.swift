@@ -8,12 +8,14 @@
 //test e205708
 
 import SwiftUI
+import KeyboardObserving
 
 @main
 struct kadai_kanriApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(Keyboard())
         }
     }
 }
