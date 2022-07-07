@@ -16,6 +16,7 @@ struct TimeTable: View {
     @State private var isdsc: Bool = false
     @State private var showDeleteAlert: Bool = false //登録されていない科目を削除されそうな時に表示するアラート用
     
+    let userName:String 
     @State var dayOfWeek: String = ""
     @State var period: Int = 0
     
@@ -75,7 +76,7 @@ struct TimeTable: View {
                                     //実際にViewを作る
                                     VStack {
                                         if filtedList.count != 0 { //科目があれば詳細を表示
-                                            NavigationLink(destination: ClassDescription(day: $dayOfWeek, period: $period, state: $isdsc), isActive: $isdsc) { Button(action:{
+                                            NavigationLink(destination: ClassDescription(day: $dayOfWeek, period: $period,state: $isdsc, userid:userName), isActive: $isdsc) { Button(action:{
                                                 isdsc = true
                                                 dayOfWeek = day
                                                 period = pe

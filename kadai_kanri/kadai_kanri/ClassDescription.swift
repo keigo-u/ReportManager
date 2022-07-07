@@ -19,6 +19,7 @@ struct ClassDescription: View {
     @Binding var day: String //受け取った曜日
     @Binding var period: Int //受け取った時間
     @Binding var state: Bool //遷移状態
+    let userid:String
     
     @State private var isSelected: Bool = false
     @State private var isAddTask: Bool = false
@@ -36,8 +37,11 @@ struct ClassDescription: View {
         let ClassName: String = selectedClass.count != 0 ? selectedClass[0].className : ""
         
         //科目名からフィルターを作成し、科目に対する課題一覧を取得
-        let assignmentFilter = NSPredicate(format: "className == %@", ClassName)
-        let filtedAssignmentsList: Results<Assignment> = assignments.filter(assignmentFilter)
+        let assignmentFilter = NSPredicate(format: "className == %@ AND userName = %@", argumentArray: ["\(ClassName)","\(userid)"])
+        let user = realmApp.currentUser!
+        let filtedAssignmentsList = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
+       
+        //let filtedAssignmentsList: Results<Assignment> = assignments.filter(assignmentFilter)
         
         ZStack {
             Color.light_beige.ignoresSafeArea() //背景色
@@ -98,18 +102,20 @@ struct ClassDescription: View {
                         ForEach(filtedAssignmentsList) { oneAssignment in
                             //タスク詳細画面を呼び出す
                             HStack{
-                                NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
-                                    let timeDay = (oneAssignment.duration/1440)
-                                    let timeHour = (oneAssignment.duration%1440)/60
-                                    let timeMinute = oneAssignment.duration%60
-                                    Text("""
-                                        課題名:\(oneAssignment.assignmentName)
-                                        所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                        """)
-                                        .foregroundColor(Color.black)
+                                if let realmUser = realmApp.currentUser{
+                                    NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
+                                        .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
+                                        let timeDay = (oneAssignment.duration/1440)
+                                        let timeHour = (oneAssignment.duration%1440)/60
+                                        let timeMinute = oneAssignment.duration%60
+                                        Text("""
+                                            課題名:\(oneAssignment.assignmentName)
+                                            所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                                            """)
+                                            .foregroundColor(Color.black)
+                                    }
+                                    .navigationBarHidden(true)
                                 }
-                                .navigationBarHidden(true)
-                                
                                 //左のチェックマークとゴミ箱
                                 VStack{
                                     //チェックボックス、タップすると完了済みに移動

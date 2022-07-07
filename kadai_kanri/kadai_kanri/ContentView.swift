@@ -62,7 +62,7 @@ struct TabViews: View{
     
     var body: some View{
         TabView {
-            TimeTable()
+            TimeTable(userName: username)
                 .tabItem {
                     Image(systemName: "clock.fill")
                     Text("時間割")
