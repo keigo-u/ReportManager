@@ -24,6 +24,7 @@ let width = UIScreen.main.bounds.size.width
 let height = UIScreen.main.bounds.size.height
 
 struct ContentView: View {
+    @State var tabSelection: Int = 0
     @State private var isAddTask: Bool = false
     
     init(){
@@ -33,23 +34,23 @@ struct ContentView: View {
     }
     var body: some View {
         
-        TabView {
-            TimeTable()
+        TabView(selection: $tabSelection) {
+            TimeTable(tabSelection: $tabSelection)
                 .tabItem {
                     Image(systemName: "clock.fill")
                     Text("時間割")
 
-                }
-            TaskManagementView() //realmオブジェクトを渡す
+                }.tag(0)
+            TaskManagementView(tabSelection: $tabSelection) //realmオブジェクトを渡す
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text("課題管理")
-                }
-            AddAssignment(state: $isAddTask)
+                }.tag(1)
+            AddAssignment(tabSelection: $tabSelection)
                 .tabItem {
                     Image(systemName: "plus.app")
                     Text("課題追加")
-                }
+                }.tag(2)
         }
         .accentColor(Color(hex: "D4DAD6"))
     }

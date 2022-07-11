@@ -8,7 +8,7 @@
 import SwiftUI
 import RealmSwift
 
-struct AddCell: View {
+struct AddCell: View { 
     
     @ObservedResults(TimeTableElement.self)  var timeTableElements
     

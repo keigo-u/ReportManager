@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct TimeTable: View {
-    
+    @Binding var tabSelection: Int
     @ObservedResults(TimeTableElement.self)  var timeTableElements
     
     @State private var isadd: Bool = false
@@ -28,8 +28,6 @@ struct TimeTable: View {
             ZStack {
                 Color.light_beige.ignoresSafeArea() //背景色
                 VStack {
-                    
-                    Spacer()
                     ZStack {
                         Color.beige
                         Text("時間割")
@@ -38,6 +36,7 @@ struct TimeTable: View {
                     }
                     .frame(height: 80)
                     .border(.gray, width: 3)
+                    .padding(.top, 15)
                     
                     Spacer()
                     

@@ -42,7 +42,6 @@ struct ClassDescription: View {
         ZStack {
             Color.light_beige.ignoresSafeArea() //背景色
             VStack {
-                Spacer()
                 ZStack {
                     Color.beige
                     Text(ClassName)
@@ -51,6 +50,7 @@ struct ClassDescription: View {
                 }
                 .frame(width: screenWidth-60, height: 80)
                 .border(.gray, width: 5)
+                .padding(.top, 15)
                 
                 Spacer()
                 

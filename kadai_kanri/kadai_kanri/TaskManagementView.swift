@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct TaskManagementView: View {
-    
+    @Binding var tabSelection: Int
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     @ObservedResults(TimeTableElement.self)  var timeTableElements//時間割一コマのリスト
     
@@ -37,7 +37,6 @@ struct TaskManagementView: View {
                 ZStack{
                     Color.light_beige.ignoresSafeArea()
                     VStack{
-                        Spacer()
                         ZStack {
                             Color.beige
                             Text("課題管理")
@@ -46,47 +45,51 @@ struct TaskManagementView: View {
                         }
                         .frame(height: 80)
                         .border(.gray, width: 3)
+                        .padding(.top, 15)
                         
                         Spacer()
                         
                         VStack{
-                            HStack{
-                                Button(action: {
-                                    isFinished = false
-                                }){
-                                    Text("実行中")
-                                }
-                                .padding(.trailing, 20)
-                                .foregroundColor(.black)
-                                
-                                Button(action: {
-                                    isFinished = true
-                                }){
-                                    Text("完了済み")
-                                }
-                                .padding(.leading, 20)
-                                .foregroundColor(.black)
+                            Picker(selection: $isFinished, label: Text("実行状態")) {
+                                Text("実行中")
+                                    .tag(false)
+                                Text("完了済み")
+                                    .tag(true)
                             }
+                            .pickerStyle(SegmentedPickerStyle())
                             .padding()
+                            .background(Color.beige)
                             
                             VStack {
                                 //assignmentは予約語だったという・・・
                                 ForEach(assignments) { oneAssignment in
+
                                     if oneAssignment.isFinished == isFinished{
-                                        
                                         //タスク詳細画面を呼び出す
                                         HStack{
                                             NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
                                                 let timeDay = (oneAssignment.duration/1440)
                                                 let timeHour = (oneAssignment.duration%1440)/60
                                                 let timeMinute = oneAssignment.duration%60
-                                                Text("""
-                                                    課題名:\(oneAssignment.assignmentName)
-                                                    所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                                    """)
-                                                    .foregroundColor(Color.black)
+                                                
+                                                //期限をDate型からString型へ
+                                                let calender = Calendar(identifier: .gregorian)
+                                                let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
+                                                let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
+                                                
+                                                VStack {
+                                                    Text("科目名: \(oneAssignment.className)")
+                                                        .foregroundColor(Color.black)
+                                                    Text("課題名: \(oneAssignment.assignmentName)")
+                                                        .foregroundColor(Color.black)
+                                                    Text("期限: \(limitDateSet)")
+                                                        .foregroundColor(Color.black)
+                                                    if oneAssignment.isFinished != isFinished {
+                                                        Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                                                            .foregroundColor(Color.black)
+                                                    }
+                                                }
                                             }
-                                            .navigationBarHidden(true)
                                             
                                             //左のチェックマークとゴミ箱
                                             VStack{
@@ -130,44 +133,21 @@ struct TaskManagementView: View {
                                             }
                                         }
                                         .padding()
+                                        .frame(width: screenWidth - 80)
                                         .background(Color.light_beige)
+                                        .compositingGroup()        // Viewの要素をグループ化
+                                        .shadow(radius: 3, y: 5)
                                     }
                                 }
                             }
                             .padding()
+                            .frame(width: screenWidth - 40)
                             .background(Color.light_green)
+                            
+                            Spacer()
                         }
                         .background(Color.light_green)
-                        .frame(width: screenWidth-80)
-                        .padding(10)
-                        
-                        Spacer()
-                            
-                        //課題追加画面を呼び出す
-                        NavigationLink(destination: AddAssignment(state: $isAddTask), isActive: $isAddTask) {
-                            if #available(iOS 15.0, *) {
-                                Button (action:{
-                                    isAddTask = true
-                                }){
-                                    Text("科目を追加する")
-                                        .padding()
-                                        .foregroundColor(.black)
-                                }
-                                .padding()
-                                .buttonStyle(.bordered)
-                            } else {
-                                // Fallback on earlier versions
-                                Button (action:{
-                                    isAddTask = true
-                                }){
-                                    Text("科目を追加する")
-                                        .padding()
-                                        .border(.black, width: 1)
-                                        .foregroundColor(.black)
-                                        .background(Color.gray)
-                                }
-                            }
-                        }
+                        .frame(width: screenWidth - 40)
                         
                         Spacer()
                         
@@ -175,7 +155,9 @@ struct TaskManagementView: View {
                             .background(Color(hex: "8C8C8C"))
                             .frame(height:2)
                     }
+                    .frame(maxWidth: .infinity)
                 }
+                .navigationBarHidden(true)
             }
             
             if isShowFinishPopUP {
@@ -196,7 +178,7 @@ struct TaskManagementView: View {
 
 struct TaskManagementView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskManagementView()
+        ContentView()
     }
 }
 
