@@ -69,7 +69,7 @@ struct TaskDescriptionView: View {
                 .frame(width: screenWidth-80, alignment: .leading)
                 .background(Color.beige)
                 
-                VStack {
+                ScrollView {
                     ForEach(filtedList) { element in
                         VStack {
                             Text("\(element.userName)さん")
