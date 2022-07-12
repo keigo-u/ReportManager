@@ -33,7 +33,9 @@ struct ClassDescription: View {
     var body: some View {
         //受け取った曜日、時間からフィルターを作成し、科目データを取得
         let classFilter = NSPredicate(format: "dayOfWeek = %@ AND period = %@", argumentArray: ["\(day)",period]) //フィルタリングの条件を作成（曜日と何限目か指定）
-        let selectedClass: Results<TimeTableElement> = timeTableElements.filter(classFilter) //受け取ったフィルターから科目を取得
+        let selectedClass: Results<TimeTableElement> = timeTableElements.filter(classFilter)
+        
+        //受け取ったフィルターから科目を取得
         let ClassName: String = selectedClass.count != 0 ? selectedClass[0].className : ""
         
         //科目名からフィルターを作成し、科目に対する課題一覧を取得

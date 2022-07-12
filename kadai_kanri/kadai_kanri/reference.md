@@ -108,6 +108,16 @@ nilだいいきらい！！！！！！
 
 [Gitでよくあるハプニングの対策とコマンドメモ](https://qiita.com/gilly/items/d590528c8309b8e37562)
 
+[Realmのfilterメソッドの使い方](https://frog9.com/post/19)
+
+[Add Results.distinct(by:) / -\[RLMResults distinctResultsUsingKeyPaths:\], which return a Results containing only objects with unique values at the given key paths.](https://github.com/realm/realm-swift/releases/tag/v3.1.0)
+
+[distinct query in Realm database #1103](https://github.com/realm/realm-swift/issues/1103)
+
+[Filter realm objects to only get one (distinct) object by attribute](https://stackoverflow.com/questions/48742646/filter-realm-objects-to-only-get-one-distinct-object-by-attribute)
+
+使えそうなものたち
+1
 # 困っていること
 
 
