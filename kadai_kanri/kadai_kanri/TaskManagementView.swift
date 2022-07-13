@@ -60,7 +60,7 @@ struct TaskManagementView: View {
                             .padding()
                             .background(Color.beige)
                             
-                            VStack {
+                            ScrollView {
                                 //assignmentは予約語だったという・・・
                                 ForEach(assignments) { oneAssignment in
 
