@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		B90CAFAD2836846D00E860B5 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAFAC2836846D00E860B5 /* AddCell.swift */; };
 		B90CAFAF28369D4E00E860B5 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAFAE28369D4E00E860B5 /* RadioButton.swift */; };
-		B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF67283F45DF00DDE610 /* AddAssignment.swift */; };
+		B932AF68283F45E000DDE610 /* pre_AddAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF67283F45DF00DDE610 /* pre_AddAssignment.swift */; };
 		B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6B283F467E00DDE610 /* TaskManagementView.swift */; };
 		B932AF6E283F467E00DDE610 /* TaskDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */; };
 		B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B932AF6F283F6F5A00DDE610 /* ContentView.swift */; };
+		B96A30DF2876B66D00A3C911 /* AddAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96A30DE2876B66D00A3C911 /* AddAssignment.swift */; };
+		B985F1D8287698B000748407 /* CreateAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B985F1D7287698B000748407 /* CreateAssignment.swift */; };
 		B98CB1542851C2F000D3ED3C /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B98CB1532851C2F000D3ED3C /* Realm */; };
 		B98CB1562851C2F000D3ED3C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B98CB1552851C2F000D3ED3C /* RealmSwift */; };
 		B99D98EC284889A800FDD848 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
@@ -32,10 +34,12 @@
 /* Begin PBXFileReference section */
 		B90CAFAC2836846D00E860B5 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
 		B90CAFAE28369D4E00E860B5 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
-		B932AF67283F45DF00DDE610 /* AddAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAssignment.swift; sourceTree = "<group>"; };
+		B932AF67283F45DF00DDE610 /* pre_AddAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pre_AddAssignment.swift; sourceTree = "<group>"; };
 		B932AF6B283F467E00DDE610 /* TaskManagementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManagementView.swift; sourceTree = "<group>"; };
 		B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDescriptionView.swift; sourceTree = "<group>"; };
 		B932AF6F283F6F5A00DDE610 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B96A30DE2876B66D00A3C911 /* AddAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAssignment.swift; sourceTree = "<group>"; };
+		B985F1D7287698B000748407 /* CreateAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAssignment.swift; sourceTree = "<group>"; };
 		B9AA7E93282CE26F00575BF3 /* TimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTable.swift; sourceTree = "<group>"; };
 		B9B1AE9F281131160059EE02 /* kadai_kanri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kadai_kanri.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kadai_kanriApp.swift; sourceTree = "<group>"; };
@@ -93,7 +97,7 @@
 		B9B1AEA1281131160059EE02 /* kadai_kanri */ = {
 			isa = PBXGroup;
 			children = (
-				B932AF67283F45DF00DDE610 /* AddAssignment.swift */,
+				B932AF67283F45DF00DDE610 /* pre_AddAssignment.swift */,
 				B932AF6C283F467E00DDE610 /* TaskDescriptionView.swift */,
 				B932AF6B283F467E00DDE610 /* TaskManagementView.swift */,
 				B9AA7E93282CE26F00575BF3 /* TimeTable.swift */,
@@ -110,6 +114,8 @@
 				D59D898D2855A0680028A4AE /* memo.md */,
 				B9FCCC092870941D008845C2 /* ClassDescription.swift */,
 				B9FCCC0B2871D7FE008845C2 /* TextFieldAlert.swift */,
+				B985F1D7287698B000748407 /* CreateAssignment.swift */,
+				B96A30DE2876B66D00A3C911 /* AddAssignment.swift */,
 			);
 			path = kadai_kanri;
 			sourceTree = "<group>";
@@ -210,16 +216,18 @@
 			files = (
 				B932AF6D283F467E00DDE610 /* TaskManagementView.swift in Sources */,
 				D5F7574E28488BB60097B803 /* testfile.swift in Sources */,
-				B932AF68283F45E000DDE610 /* AddAssignment.swift in Sources */,
+				B932AF68283F45E000DDE610 /* pre_AddAssignment.swift in Sources */,
 				B932AF70283F6F5B00DDE610 /* ContentView.swift in Sources */,
 				B9AA7E94282CE26F00575BF3 /* TimeTable.swift in Sources */,
 				B90CAFAD2836846D00E860B5 /* AddCell.swift in Sources */,
 				D5E9E18728728AE50093D454 /* LoginView.swift in Sources */,
+				B985F1D8287698B000748407 /* CreateAssignment.swift in Sources */,
 				B90CAFAF28369D4E00E860B5 /* RadioButton.swift in Sources */,
 				B9FCCC0A2870941D008845C2 /* ClassDescription.swift in Sources */,
 				B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */,
 				D5F7575128488F660097B803 /* Assignment.swift in Sources */,
 				D5F75756284893FD0097B803 /* TimeTableElement.swift in Sources */,
+				B96A30DF2876B66D00A3C911 /* AddAssignment.swift in Sources */,
 				B932AF6E283F467E00DDE610 /* TaskDescriptionView.swift in Sources */,
 				B9FCCC0C2871D7FF008845C2 /* TextFieldAlert.swift in Sources */,
 			);

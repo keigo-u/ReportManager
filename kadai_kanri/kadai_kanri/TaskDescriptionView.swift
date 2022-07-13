@@ -33,66 +33,92 @@ struct TaskDescriptionView: View {
 
     var body: some View {
         
+
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
+        
+                        
         let filtering = NSPredicate(format: "assignmentName = %@ AND className = %@ AND isFinished = %@", argumentArray: ["\(selectedAssignment.assignmentName)","\(selectedAssignment.className)",true]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
         let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
+        let averageTime: Double = filtedList.average(ofProperty: "duration") ?? 0 //平均時間(分)
+                        
         
+        //期限をDate型からString型へ
+        let calender = Calendar(identifier: .gregorian)
+        let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: selectedAssignment.limitDate)
+        let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
         
-        let averageTime: Double = filtedList.average(ofProperty: "duration") ?? 0
-        
-        
-        
-        VStack {
-            Text("課題詳細")
-                .font(.largeTitle)
-            
-            
-                let timeDay = String(format: "%.1f",(averageTime/1440))
-                let timeHour = String(format: "%.1f",(averageTime.truncatingRemainder(dividingBy: 1440))/60)
-                let timeMinute = String(format: "%.1f",averageTime.truncatingRemainder(dividingBy: 60))
-                Text("平均所要時間:約\(timeDay)日\(timeHour)時間\(timeMinute)分")
-            
-            Text("要素の名前:\(selectedAssignment.assignmentName)")
-            
-            List{
-                ForEach(filtedList) { element in
-                    ZStack(alignment: .leading) {
-                        let timeDay = (element.duration/1440)
-                        let timeHour = (element.duration%1440)/60
-                        let timeMinute = element.duration%60
-                        Rectangle().fill(.gray)
-                        Text("""
-                             \(element.userName)さん
-                             所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                             備考:\(element.detail)
-                             """)
-                            .padding()
-                    }
-                    
+        ZStack {
+            Color.light_beige.ignoresSafeArea()
+            VStack {
+                ZStack {
+                    Color.beige
+                    Text("課題詳細")
+                        .font(.title)
+                        .padding()
                 }
+                .frame(height: 80)
+                .border(.gray, width: 3)
+                .padding(.top, 15)
+                
                 Spacer()
+                
+                VStack {
+                    Text("科目名: \(selectedAssignment.className)")
+                    Divider()
+                    Text("課題名: \(selectedAssignment.assignmentName)")
+                    Divider()
+                    Text("期限: \(limitDateSet)")
+                    Divider()
+                    Text("平均所要時間: \(averageTime)分")
+                }
+                .padding()
+                .frame(width: screenWidth-80, alignment: .leading)
+                .background(Color.beige)
+                
+                ScrollView {
+                    ForEach(filtedList) { element in
+                        VStack {
+                            Text("\(element.userName)さん")
+                            Divider()
+                            Text("所要時間:\(element.duration)")
+                            Divider()
+                            Text("備考:\(element.detail)")
+                        }
+                        .padding(5)
+                        .background(Color.light_beige)
+                    }
+                    .border(Color.gray, width:1)
+                    
+                    Spacer()
+                }
+                .padding()
+                .background(Color.light_green)
+                .frame(width: screenWidth-40)
+                
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("戻る　　　")
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(Color.light_gray)
+                }
+                .padding()
+                .compositingGroup()        // Viewの要素をグループ化
+                .shadow(radius: 3, y: 5)
             }
-            .frame(width: 250, height: 350)
-            .listStyle(SidebarListStyle())
-            
-            Button(action: {
-                dismiss()
-            }){
-                Text("戻る")
-                    .font(.largeTitle)
-                    .frame(width: 150, height: 60)
-                    .foregroundColor(Color.black)
-                    .background(Color.gray)
-            }
+            .navigationBarHidden(true)
         }
     }
     
     
     
 }
-/*
+
 struct TaskDescriptionView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskDescriptionView()
+        ContentView()
     }
-}*/
+}
 

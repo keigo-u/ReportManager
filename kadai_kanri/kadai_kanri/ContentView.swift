@@ -26,6 +26,10 @@ let width = UIScreen.main.bounds.size.width
 let height = UIScreen.main.bounds.size.height
 
 struct ContentView: View {
+
+    
+    @State private var isAddTask: Bool = false
+
     
     @State private var username = "" //userID
     
@@ -51,6 +55,7 @@ struct ContentView_Previews: PreviewProvider {
 struct TabViews: View{
     let username:String
     @State private var isAddTask: Bool = false
+    @State var tabSelection: Int = 0
 
     init(username:String){
         //タブの背景色
@@ -59,31 +64,31 @@ struct TabViews: View{
         self.username = username
 
     }
-    
-    var body: some View{
-        TabView {
-            TimeTable(userName: username)
+
+    var body: some View {
+        
+        TabView(selection: $tabSelection) {
+            TimeTable(tabSelection: $tabSelection, userName: username)
                 .tabItem {
                     Image(systemName: "clock.fill")
                     Text("時間割")
-
-                }
+                }.tag(0)
+            
             if let realmUser = realmApp.currentUser{
-                TaskManagementView(userid: username) //realmオブジェクトを渡す
+                TaskManagementView(tabSelection: $tabSelection,userid: username) //realmオブジェクトを渡す
                     .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
                     .tabItem {
                         Image(systemName: "house.fill")
                         Text("課題管理")
-                    }
+                    }.tag(1)
             }
-            if let realmUser = realmApp.currentUser{
-                AddAssignment(userid:username,state: $isAddTask)
-                    .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
-                    .tabItem {
-                        Image(systemName: "plus.app")
-                        Text("課題追加")
-                    }
-            }
+            
+            AddAssignment(tabSelection: $tabSelection, userid:username,state: $isAddTask)
+                .tabItem {
+                    Image(systemName: "plus.app")
+                    Text("課題追加")
+                }.tag(2)
+            
         }
         .accentColor(Color(hex: "D4DAD6"))
     }

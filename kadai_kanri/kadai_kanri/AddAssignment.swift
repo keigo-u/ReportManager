@@ -1,121 +1,155 @@
 //
-//  ContentView.swift
-//  sample
+//  AddAssignment.swift
+//  kadai_kanri
 //
-//  Created by kuniyoshi on 2022/05/12.
+//  Created by K.U on 2022/07/07.
 //
 
 import SwiftUI
 import RealmSwift
 
 struct AddAssignment: View {
-    /*
-     メモ：完全に気づかなかったんだけど・・・課題追加画面って経過時間を入力するようになっているから「終了した課題」を追加するわけなんですね・・・
-     が、（現在は）課題管理画面で表示するのは、「終了していない課題」な訳なのですが、とりあえず！！「終了したもの」「終了していないもの」を考えないで、全部課題管理画面で表示するようにしておこう！
-     */
+    init(tabSelection: Binding<Int>,userid: String,state: Binding<Bool>) {
+        self._tabSelection = tabSelection
+        UITableView.appearance().backgroundColor = .clear
+        self.userid = userid
+        self._state = state
+    }
+    @Binding var tabSelection: Int //tabカウンタ
+    
     @ObservedResults(Assignment.self) var assignments //課題のリスト
-    let userid:String
     
+    @ObservedResults(TimeTableElement.self)  var timeTableElements //時間割のリスト
     
-    let hours: [Int] = Array(0..<24)
-    let minutes: [Int] = Array(0..<60)
-    @State var SubjectName = "" //科目名
-    @State var AssignmentName = "" //課題名
-    @State var Time:[Int] = [0,0,0]
-    @State var Remarks = ""
-    @State var select = 0
-    @Binding var state :Bool
-    @Environment(\.presentationMode) var presentationMode
+    let userid :String
+    @Binding var state: Bool
+    
+    @State var selectedClass: String = ""
+    @State var isSelected: Bool = false //課題詳細用
+    @State var isadd: Bool = false //課題作成用
+    @State var assignmentFilter = NSPredicate(format: "className == %@", "") //課題用フィルター
+    
+
     var body: some View {
-        let bounds =  UIScreen.main.bounds
-        let width = CGFloat(bounds.width)
-        let height = CGFloat(bounds.height)
-        
-        NavigationView{
-            VStack{
-                Form{
-                    HStack{
-                        Text("　科目名：").frame(width:CGFloat(width/3.5))
-                        TextField("入力してください",text:$SubjectName);
+        NavigationView {
+            ZStack {
+                Color.light_beige.ignoresSafeArea()
+                VStack{
+                    ZStack {
+                        Color.beige
+                        Text("課題追加")
+                            .font(.title)
+                            .padding()
                     }
-                    HStack{
-                        Text("　課題名：").frame(width:CGFloat(width/3.5))
-                        TextField("入力してください",text:$AssignmentName)
-                    }
-                    HStack{
-                        Text("経過時間：").frame(width:CGFloat(width/3.5))
-                        Spacer()
-                        TextField("\(Time[0])",value:$Time[0],formatter: NumberFormatter()).keyboardType(.numberPad)
-                            .frame(width: CGFloat(width/8))
-                        Text("　日")
-                    }
-                    HStack{
-                        Spacer()
-                        Picker("",selection: $Time[1]){
-                            ForEach(0 ..< 24) { num1 in
-                                Text(String(self.hours[num1]))
+                    .frame(height: 80)
+                    .border(.gray, width: 3)
+                    .padding(.top, 15)
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 40) {
+                        Text("科目名を選択")
+                        Picker(selection: $selectedClass, label:  Text("科目名")) {
+                            ForEach(timeTableElements) { cell in
+                                Text("\(cell.className)").foregroundColor(Color.black)
+                                    .tag(cell.className)
                             }
                         }
-                        .clipped()
-                        Text("時間")
+                        .onChange(of: selectedClass) { tmpClass in
+                            assignmentFilter = NSPredicate(format: "className == %@ AND userName == %@" , [tmpClass,"\(userid)"])
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .colorMultiply(Color.black)
+                        //.labelsHidden()
+                        .padding(5)
+                        .padding(.leading, 35)
+                        .padding(.trailing, 35)
+                        .border(Color.gray, width: 1)
                     }
-                    HStack{
-                        Spacer()
-                        Picker("",selection: $Time[2]){
-                            ForEach(0 ..< 60) { num2 in
-                                Text(String(self.minutes[num2]))
+                    .padding()
+                    .frame(width: screenWidth - 40, height: 50, alignment: .leading)
+                    .background(Color.light_green)
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("出されている課題")
+                            .padding(.top, 10)
+                        ScrollView {
+                            let user = realmApp.currentUser!
+                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self)
+                            if assignments.count != 0 {
+                                ForEach(assignments.filter(assignmentFilter)) { oneAssignment in
+                                    HStack {
+                                        Text(oneAssignment.assignmentName)
+                                            .frame(alignment: .leading)
+                                        Button("追加", action: {})
+                                            .foregroundColor(Color.black)
+                                            .padding(5)
+                                            .border(Color.black, width: 1)
+                                            .frame(alignment: .trailing)
+                                    }
+                                    .padding()
+                                    .frame(width: screenWidth - 80)
+                                    .background(Color.light_beige)
+                                    .compositingGroup()        // Viewの要素をグループ化
+                                    .shadow(radius: 3, y: 5)
+                                }
+                            } else {
+                                Text("    ")
+                                    .padding()
                             }
                         }
-                        .clipped()
-                        Text("　分")
+                        .padding()
+                        .frame(width: screenWidth - 40)
+                        .background(Color.light_green)
                     }
-                    HStack{
-                        Text("　　備考：").frame(width:CGFloat(width/3.5))
-                        TextField("入力してください",text:$Remarks)
+                    .frame(width: screenWidth - 40)
+                    .background(Color.beige)
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("追加したい課題が一覧にない場合")
+                            .padding(.top, 10)
+                        VStack {
+                            NavigationLink(destination: CreateAssignment(state: $isadd, selectedClass: $selectedClass,userid:userid), isActive: $isadd) {
+                                Button (action:{
+                                    isadd = true
+                                }){
+                                    Text("新たに課題を追加")
+                                        .padding()
+                                        .border(.black, width: 1)
+                                        .foregroundColor(.black)
+                                        .background(Color.light_beige)
+                                }
+                                .compositingGroup()        // Viewの要素をグループ化
+                                .shadow(radius: 3, y: 5)
+                            }
+                        }
+                        .padding()
+                        .frame(width: screenWidth - 40)
+                        .background(Color.light_green)
                     }
-                }.navigationTitle("課題追加画面")
-                Button(action:{
+                    .frame(width: screenWidth - 40)
+                    .background(Color.beige)
                     
-                    //分に直す
-                    let tmpTime = Time[0]*24*60 + Time[1]*60 + Time[2]
-                    //realmに追加するAssignmentオブジェクトを作成する。期限は現在入力できるようになっていないため、Date()をとりあえず使っている。
-                    let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: Remarks,limitDate: Date(),duration: tmpTime,className: SubjectName)
-                    assignemtTemp.userName = userid
-                    //realmに追加する
-                    addAssignmentToRealm(oneAssignment: assignemtTemp)
+
+                    Spacer()
+
                     
-                    //前の画面に戻る
-                    state = false
-                    presentationMode.wrappedValue.dismiss()
-                }){
-                    Text("追加")
-                        .frame(width: width,height: (height/10))
-                        .border(Color.gray)
+                    Divider()
+                        .background(Color(hex: "8C8C8C"))
+                        .frame(height:2)
                 }
-                Spacer()
-                Divider()
-                    .background(Color(hex: "8C8C8C"))
-                    .frame(height:2)
             }
+            .navigationBarHidden(true)
         }
     }
-    
-    func addAssignmentToRealm(oneAssignment: Assignment){
-        $assignments.append(oneAssignment)
-    }
 }
-/*
- struct AddAssignment_Previews: PreviewProvider {
- static var previews: some View {
- Group {
- if #available(iOS 15.0, *) {
- AddAssignment()
- .previewInterfaceOrientation(.portrait)
- } else {
- // Fallback on earlier versions
- }
- }
- 
- }
- }
- */
+//
+//struct AddAssignment_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct TaskManagementView: View {
-    
+    @Binding var tabSelection: Int
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     
     @State private var isSelected: Bool = false
@@ -37,7 +37,6 @@ struct TaskManagementView: View {
                 ZStack{
                     Color.light_beige.ignoresSafeArea()
                     VStack{
-                        Spacer()
                         ZStack {
                             Color.beige
                             Text("課題管理")
@@ -46,57 +45,63 @@ struct TaskManagementView: View {
                         }
                         .frame(height: 80)
                         .border(.gray, width: 3)
+                        .padding(.top, 15)
                         
                         Spacer()
                         
                         VStack{
-                            HStack{
-                                Button(action: {
-                                    isFinished = false
-                                }){
-                                    Text("実行中")
-                                }
-                                .padding(.trailing, 20)
-                                .foregroundColor(.black)
-                                
-                                Button(action: {
-                                    isFinished = true
-                                }){
-                                    Text("完了済み")
-                                }
-                                .padding(.leading, 20)
-                                .foregroundColor(.black)
+                            Picker(selection: $isFinished, label: Text("実行状態")) {
+                                Text("実行中")
+                                    .tag(false)
+                                Text("完了済み")
+                                    .tag(true)
                             }
+                            .pickerStyle(SegmentedPickerStyle())
                             .padding()
+                            .background(Color.beige)
                             
                             
                             //自分の課題を取り出す
                             let filtering = NSPredicate(format: "userName = %@", argumentArray: ["\(userid)"])
-                            let myAssignments: Results<Assignment> = assignments.filter(filtering)
+                            let assignments: Results<Assignment> = assignments.filter(filtering)
                             
                             
                             
                             VStack {
                                 
                                 //assignmentは予約語だったという・・・
-                                ForEach(myAssignments) { oneAssignment in
+
+                                ForEach(assignments) { oneAssignment in
+
                                     if oneAssignment.isFinished == isFinished{
-                                        
-                                        //タスク詳細画面に移動できるviewを呼び出す
+                                        //タスク詳細画面を呼び出す
                                         HStack{
                                             if let realmUser = realmApp.currentUser{
                                                 NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
                                                     .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
-                                                        let timeDay = (oneAssignment.duration/1440)
-                                                        let timeHour = (oneAssignment.duration%1440)/60
-                                                        let timeMinute = oneAssignment.duration%60
-                                                        Text("""
-                                                        課題名:\(oneAssignment.assignmentName)
-                                                        所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                                        """)
-                                                        .foregroundColor(Color.black)
+                                                    let timeDay = (oneAssignment.duration/1440)
+                                                    let timeHour = (oneAssignment.duration%1440)/60
+                                                    let timeMinute = oneAssignment.duration%60
+                                                    
+                                                    //期限をDate型からString型へ
+                                                    let calender = Calendar(identifier: .gregorian)
+                                                    let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
+                                                    let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
+                                                    
+                                                    VStack {
+                                                        Text("科目名: \(oneAssignment.className)")
+                                                            .foregroundColor(Color.black)
+                                                        Text("課題名: \(oneAssignment.assignmentName)")
+                                                            .foregroundColor(Color.black)
+                                                        Text("期限: \(limitDateSet)")
+                                                            .foregroundColor(Color.black)
+                                                        if oneAssignment.isFinished != isFinished {
+                                                            Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                                                                .foregroundColor(Color.black)
+                                                        }
                                                     }
-                                                    .navigationBarHidden(true)
+
+                                                }
                                             }
                                             
                                             //左のチェックマークとゴミ箱
@@ -143,50 +148,23 @@ struct TaskManagementView: View {
                                             }
                                         }
                                         .padding()
+                                        .frame(width: screenWidth - 80)
                                         .background(Color.light_beige)
+                                        .compositingGroup()        // Viewの要素をグループ化
+                                        .shadow(radius: 3, y: 5)
                                     }
                                 }
                             }
                             .padding()
+                            .frame(width: screenWidth - 40)
                             .background(Color.light_green)
+
+                            
+                            Spacer()
+
                         }
                         .background(Color.light_green)
-                        .frame(width: screenWidth-80)
-                        .padding(10)
-                        
-                        Spacer()
-                        
-                        
-                        if let realmUser = realmApp.currentUser{
-                            //課題追加画面を呼び出す
-                            NavigationLink(destination: AddAssignment(userid: userid,state: $isAddTask)
-                                .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))
-                                           , isActive: $isAddTask) {
-                                if #available(iOS 15.0, *) {
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .foregroundColor(.black)
-                                    }
-                                    .padding()
-                                    .buttonStyle(.bordered)
-                                } else {
-                                    // Fallback on earlier versions
-                                    Button (action:{
-                                        isAddTask = true
-                                    }){
-                                        Text("科目を追加する")
-                                            .padding()
-                                            .border(.black, width: 1)
-                                            .foregroundColor(.black)
-                                            .background(Color.gray)
-                                    }
-                                }
-                                
-                            }
-                        }
+                        .frame(width: screenWidth - 40)
                         
                         
                         Spacer()
@@ -195,7 +173,9 @@ struct TaskManagementView: View {
                             .background(Color(hex: "8C8C8C"))
                             .frame(height:2)
                     }
+                    .frame(maxWidth: .infinity)
                 }
+                .navigationBarHidden(true)
             }
             
             if isShowFinishPopUP {
@@ -215,13 +195,11 @@ struct TaskManagementView: View {
 }
 
 
-//
-//struct TaskManagementView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TaskManagementView()
-//    }
-//}
-
+struct TaskManagementView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
 
 
 //課題を終了したときに出てくるポップアップ。値の置き換えもここで行う

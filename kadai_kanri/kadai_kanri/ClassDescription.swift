@@ -46,8 +46,24 @@ struct ClassDescription: View {
         //let filtedAssignmentsList: Results<Assignment> = assignments.filter(assignmentFilter)
         
         ZStack {
-            ZStack{
-                Color.light_beige.ignoresSafeArea() //背景色
+
+            Color.light_beige.ignoresSafeArea() //背景色
+            VStack {
+                
+                //同じのが二つあったのでとりあえずコメントアウト
+//                ZStack {
+//                    Color.beige
+//                    Text(ClassName)
+//                        .font(.title)
+//                        .padding()
+//                }
+//
+//                .frame(width: screenWidth-60, height: 80)
+//                .border(.gray, width: 5)
+//                .padding(.top, 15)
+//
+//                Spacer()
+                
                 VStack {
                     Spacer()
                     ZStack {
@@ -105,20 +121,20 @@ struct ClassDescription: View {
                             ForEach(filtedAssignmentsList) { oneAssignment in
                                 //タスク詳細画面を呼び出す
                                 HStack{
-                                    if let realmUser = realmApp.currentUser{
-                                        NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
-                                            .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
-                                            let timeDay = (oneAssignment.duration/1440)
-                                            let timeHour = (oneAssignment.duration%1440)/60
-                                            let timeMinute = oneAssignment.duration%60
-                                            Text("""
-                                                課題名:\(oneAssignment.assignmentName)
-                                                所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
-                                                """)
-                                                .foregroundColor(Color.black)
-                                        }
-                                        .navigationBarHidden(true)
+                                    let realmUser = realmApp.currentUser!
+                                    NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
+                                        .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
+                                        let timeDay = (oneAssignment.duration/1440)
+                                        let timeHour = (oneAssignment.duration%1440)/60
+                                        let timeMinute = oneAssignment.duration%60
+                                        Text("""
+                                            課題名:\(oneAssignment.assignmentName)
+                                            所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分
+                                            """)
+                                            .foregroundColor(Color.black)
                                     }
+                                    .navigationBarHidden(true)
+                                    
                                     //左のチェックマークとゴミ箱
                                     VStack{
                                         //チェックボックス、タップすると完了済みに移動
@@ -131,7 +147,8 @@ struct ClassDescription: View {
                                                     nowSelectedAssighment = oneAssignment
                                                 }else{
                                                     //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
-                                                    let realm = try! Realm()
+                                                    let user = realmApp.currentUser!
+                                                    let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                                                     let finishedAssignment = oneAssignment.thaw()!
                                                     try! realm.write {
                                                         finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
