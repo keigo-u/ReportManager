@@ -56,7 +56,7 @@ struct AddAssignment: View {
                             }
                         }
                         .onChange(of: selectedClass) { tmpClass in
-                            assignmentFilter = NSPredicate(format: "className == %@ AND userName == %@" , ["\(tmpClass)","\(userid)"])
+                            assignmentFilter = NSPredicate(format: "className == %@" , tmpClass)
                         }
                         .pickerStyle(MenuPickerStyle())
                         .colorMultiply(Color.black)
