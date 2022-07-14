@@ -8,9 +8,12 @@
 //test e205708
 
 import SwiftUI
+import RealmSwift
+
+let realmApp = RealmSwift.App(id: "task_manager-qiurl")
 
 @main
-struct kadai_kanriApp: App {
+struct kadai_kanriApp: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             ContentView()

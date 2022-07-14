@@ -11,7 +11,6 @@ import RealmSwift
 struct TaskManagementView: View {
     @Binding var tabSelection: Int
     @ObservedResults(Assignment.self) var assignments //課題のリスト
-    @ObservedResults(TimeTableElement.self)  var timeTableElements//時間割一コマのリスト
     
     @State private var isSelected: Bool = false
     @State private var isAddTask: Bool = false
@@ -24,7 +23,8 @@ struct TaskManagementView: View {
     
     @State private var nowSelectedAssighment: Assignment = Assignment(assigmentName: "placeholder", detail: "placeholder", limitDate: Date(), duration: 0, className: "placeholder") //タップされた課題を入れる（課題の削除や、編集で使う）初期値はとりあえずで入れたもの意味はない。
     
-    @State private var comment: String = ""
+    
+    let userid: String //userid
     
     
     var body: some View {
@@ -62,32 +62,37 @@ struct TaskManagementView: View {
                             
                             ScrollView {
                                 //assignmentは予約語だったという・・・
+
                                 ForEach(assignments) { oneAssignment in
 
                                     if oneAssignment.isFinished == isFinished{
                                         //タスク詳細画面を呼び出す
                                         HStack{
-                                            NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)) {
-                                                let timeDay = (oneAssignment.duration/1440)
-                                                let timeHour = (oneAssignment.duration%1440)/60
-                                                let timeMinute = oneAssignment.duration%60
-                                                
-                                                //期限をDate型からString型へ
-                                                let calender = Calendar(identifier: .gregorian)
-                                                let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
-                                                let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
-                                                
-                                                VStack {
-                                                    Text("科目名: \(oneAssignment.className)")
-                                                        .foregroundColor(Color.black)
-                                                    Text("課題名: \(oneAssignment.assignmentName)")
-                                                        .foregroundColor(Color.black)
-                                                    Text("期限: \(limitDateSet)")
-                                                        .foregroundColor(Color.black)
-                                                    if oneAssignment.isFinished != isFinished {
-                                                        Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                                            if let realmUser = realmApp.currentUser{
+                                                NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
+                                                    .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
+                                                    let timeDay = (oneAssignment.duration/1440)
+                                                    let timeHour = (oneAssignment.duration%1440)/60
+                                                    let timeMinute = oneAssignment.duration%60
+                                                    
+                                                    //期限をDate型からString型へ
+                                                    let calender = Calendar(identifier: .gregorian)
+                                                    let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
+                                                    let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
+                                                    
+                                                    VStack {
+                                                        Text("科目名: \(oneAssignment.className)")
                                                             .foregroundColor(Color.black)
+                                                        Text("課題名: \(oneAssignment.assignmentName)")
+                                                            .foregroundColor(Color.black)
+                                                        Text("期限: \(limitDateSet)")
+                                                            .foregroundColor(Color.black)
+                                                        if oneAssignment.isFinished != isFinished {
+                                                            Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                                                                .foregroundColor(Color.black)
+                                                        }
                                                     }
+
                                                 }
                                             }
                                             
@@ -103,7 +108,8 @@ struct TaskManagementView: View {
                                                             nowSelectedAssighment = oneAssignment
                                                         }else{
                                                             //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
-                                                            let realm = try! Realm()
+                                                            let user = realmApp.currentUser!
+                                                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                                                             let finishedAssignment = oneAssignment.thaw()!
                                                             try! realm.write {
                                                                 finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
@@ -123,7 +129,8 @@ struct TaskManagementView: View {
                                                 }
                                                 .alert(isPresented: $isShowDeletePopUP) {
                                                     Alert(title: Text("この課題を削除しますか？"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .destructive(Text("削除"), action: {
-                                                        let realm = try! Realm()
+                                                        let user = realmApp.currentUser!
+                                                        let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                                                         let deletedAssignment = oneAssignment.thaw()!
                                                         try! realm.write {
                                                             realm.delete(deletedAssignment)
@@ -143,11 +150,14 @@ struct TaskManagementView: View {
                             .padding()
                             .frame(width: screenWidth - 40)
                             .background(Color.light_green)
+
                             
                             Spacer()
+
                         }
                         .background(Color.light_green)
                         .frame(width: screenWidth - 40)
+                        
                         
                         Spacer()
                         
@@ -176,11 +186,13 @@ struct TaskManagementView: View {
     }
 }
 
+
 struct TaskManagementView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+
 
 //課題を終了したときに出てくるポップアップ。値の置き換えもここで行う
 struct finishPopUpView: View{
@@ -231,7 +243,8 @@ struct finishPopUpView: View{
                 Button(action: {
                     
                     //課題のisFinishedを置き換える
-                    let realm = try! Realm()
+                    let user = realmApp.currentUser!
+                    let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
                     let finishedAssignment = nowSelectedAssignment.thaw()!
                     try! realm.write {
                         //所要時間、コメントの追加、完了状態の変更を行う

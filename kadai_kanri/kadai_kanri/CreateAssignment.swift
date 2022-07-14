@@ -15,11 +15,12 @@ struct CreateAssignment: View {
     @ObservedResults(Assignment.self) var assignments //課題のリスト
     
     @Binding var state: Bool
-    @Binding var selectedClass: String //科目名
+    @State var selectedClass: String //科目名
     @State private var AssignmentName: String = "" //課題名
     @State private var detail: String = "" //課題詳細
     @State private var selectionDate = Date()
     
+    let userid :String
     var body: some View {
         NavigationView{
             ZStack {
@@ -42,7 +43,7 @@ struct CreateAssignment: View {
                             Text("科目名:")
                             Picker(selection: $selectedClass, label:  Text("科目名")) {
                                 ForEach(timeTableElements) { cell in
-                                    Text("\(cell.className)").tag(cell.className)
+                                    Text(cell.className).tag(cell.className)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle())
@@ -86,8 +87,15 @@ struct CreateAssignment: View {
                         
                         Button(action:{
                             let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: detail, limitDate: selectionDate,duration: 0,className: selectedClass) //realmに追加するAssignmentオブジェクトを作成
+                            assignemtTemp.userName = userid
                             
-                            $assignments.append(assignemtTemp) //realmに追加する
+                            
+                            //追加する
+                            let user = realmApp.currentUser!
+                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                            try! realm.write {
+                                realm.add(assignemtTemp)
+                            }
                             
                             state = false //前の画面に戻る
                         }){

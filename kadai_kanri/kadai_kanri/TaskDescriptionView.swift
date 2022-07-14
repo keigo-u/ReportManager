@@ -16,7 +16,9 @@ struct TaskDescriptionView: View {
      @persisted(Assignment.self)をselectedAssignemtの名前（もしくはid?）でフィルターしたものを表示するようにしたい。(なんとなくそっちの方が後から楽そう)
      */
     @Environment(\.presentationMode) var presentationMode //戻るボタンを作るために作成
-    var averageTime = 90
+    
+    @State var sumDuration: Int = 0
+    
     
     var selectedAssignment: Assignment //選択されたタスク
     @ObservedResults(Assignment.self) var assignments //課題のリスト
@@ -28,13 +30,18 @@ struct TaskDescriptionView: View {
     @Binding var state :Bool
     @Environment(\.dismiss) var dismiss
     
+
     var body: some View {
         
+
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
         
-        let filtering = NSPredicate(format: "assignmentName = %@", argumentArray: ["\(selectedAssignment.assignmentName)"]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
+                        
+        let filtering = NSPredicate(format: "assignmentName = %@ AND className = %@ AND isFinished = %@", argumentArray: ["\(selectedAssignment.assignmentName)","\(selectedAssignment.className)",true]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
         let filtedList: Results<Assignment> = assignments.filter(filtering) //フィルタリング結果が入る？
+        let averageTime: Double = filtedList.average(ofProperty: "duration") ?? 0 //平均時間(分)
+                        
         
         //期限をDate型からString型へ
         let calender = Calendar(identifier: .gregorian)
@@ -104,6 +111,9 @@ struct TaskDescriptionView: View {
             .navigationBarHidden(true)
         }
     }
+    
+    
+    
 }
 
 struct TaskDescriptionView_Previews: PreviewProvider {
@@ -111,3 +121,4 @@ struct TaskDescriptionView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
