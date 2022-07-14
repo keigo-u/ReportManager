@@ -56,7 +56,7 @@ struct AddAssignment: View {
                             }
                         }
                         .onChange(of: selectedClass) { tmpClass in
-                            assignmentFilter = NSPredicate(format: "className == %@ AND userName == %@" , [tmpClass,"\(userid)"])
+                            assignmentFilter = NSPredicate(format: "className == %@ AND userName == %@" , ["\(tmpClass)","\(userid)"])
                         }
                         .pickerStyle(MenuPickerStyle())
                         .colorMultiply(Color.black)
@@ -76,10 +76,12 @@ struct AddAssignment: View {
                         Text("出されている課題")
                             .padding(.top, 10)
                         ScrollView {
+                            
+                            
                             let user = realmApp.currentUser!
-                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self)
+                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
                             if assignments.count != 0 {
-                                ForEach(assignments.filter(assignmentFilter)) { oneAssignment in
+                                ForEach(assignments) { oneAssignment in
                                     HStack {
                                         Text(oneAssignment.assignmentName)
                                             .frame(alignment: .leading)
@@ -113,7 +115,7 @@ struct AddAssignment: View {
                         Text("追加したい課題が一覧にない場合")
                             .padding(.top, 10)
                         VStack {
-                            NavigationLink(destination: CreateAssignment(state: $isadd, selectedClass: $selectedClass,userid:userid), isActive: $isadd) {
+                            NavigationLink(destination: CreateAssignment(state: $isadd, selectedClass: selectedClass,userid:userid), isActive: $isadd) {
                                 Button (action:{
                                     isadd = true
                                 }){
