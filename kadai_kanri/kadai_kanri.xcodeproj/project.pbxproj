@@ -23,9 +23,9 @@
 		B9B1AEA3281131160059EE02 /* kadai_kanriApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B1AEA2281131160059EE02 /* kadai_kanriApp.swift */; };
 		B9B1AEA7281131190059EE02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA6281131190059EE02 /* Assets.xcassets */; };
 		B9B1AEAA281131190059EE02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9B1AEA9281131190059EE02 /* Preview Assets.xcassets */; };
-		D5E9E18728728AE50093D454 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E9E18628728AE40093D454 /* LoginView.swift */; };
 		B9FCCC0A2870941D008845C2 /* ClassDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FCCC092870941D008845C2 /* ClassDescription.swift */; };
 		B9FCCC0C2871D7FF008845C2 /* TextFieldAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FCCC0B2871D7FE008845C2 /* TextFieldAlert.swift */; };
+		D5E9E18728728AE50093D454 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E9E18628728AE40093D454 /* LoginView.swift */; };
 		D5F7574E28488BB60097B803 /* testfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7574D28488BB60097B803 /* testfile.swift */; };
 		D5F7575128488F660097B803 /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F7575028488F660097B803 /* Assignment.swift */; };
 		D5F75756284893FD0097B803 /* TimeTableElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F75755284893FD0097B803 /* TimeTableElement.swift */; };
@@ -360,7 +360,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kadai_kanri/Preview Content\"";
-				DEVELOPMENT_TEAM = QLDWN89ZH2;
+				DEVELOPMENT_TEAM = 36K9SQ2PNV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -375,7 +375,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ie-mobile-app.kadai-kanri";
+				PRODUCT_BUNDLE_IDENTIFIER = touyama;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -391,7 +391,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kadai_kanri/Preview Content\"";
-				DEVELOPMENT_TEAM = QLDWN89ZH2;
+				DEVELOPMENT_TEAM = 36K9SQ2PNV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
@@ -406,7 +406,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ie-mobile-app.kadai-kanri";
+				PRODUCT_BUNDLE_IDENTIFIER = touyama;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

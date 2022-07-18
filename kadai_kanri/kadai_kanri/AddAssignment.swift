@@ -85,7 +85,21 @@ struct AddAssignment: View {
                                     HStack {
                                         Text(oneAssignment.assignmentName)
                                             .frame(alignment: .leading)
-                                        Button("追加", action: {})
+                                        Button("追加", action: {
+                                            
+                                            //追加する
+                                            let user = realmApp.currentUser!
+                                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                                            let myAssignment = Assignment(assigmentName:oneAssignment.assignmentName,detail : "",limitDate:oneAssignment.limitDate,duration:0,className:oneAssignment.className)
+                                            myAssignment.userName = userid
+                                            myAssignment.isFinished = false
+                                            myAssignment.detail = ""
+                                            myAssignment.duration = 0
+                                            try! realm.write {
+                                                realm.add(myAssignment)
+                                            }
+                                            
+                                        })
                                             .foregroundColor(Color.black)
                                             .padding(5)
                                             .border(Color.black, width: 1)
