@@ -18,6 +18,8 @@ struct AddCell: View {
     @State private var selectedIndex1 = 0
     @State private var selectedIndex2 = 0
     @State private var showDuplicateAlert : Bool = false //同じ曜日、時間に科目が入っていたらアラートを出す
+    @State private var showNoneValueAlert : Bool = false //科目名が空白であればアラートを出す
+    
     let days: [String] = ["月", "火", "水", "木", "金"]
     let time: [String] = ["１", "２", "３", "４", "５"]
     @Binding var state: Bool
@@ -47,6 +49,7 @@ struct AddCell: View {
                             Text("科目名")
                             TextField("入力してください", text: $text)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .alert("空白の箇所が存在します",isPresented: $showNoneValueAlert,actions: {})//空白の箇所がある時アラートを表示する
                         }
                         .alert("同じ時間に他の科目が追加されています",isPresented: $showDuplicateAlert,actions: {})//時間が被っていたらアラートを表示する
                     }
@@ -95,7 +98,9 @@ struct AddCell: View {
                     
                     showDuplicateAlert = filtedList.count == 0 ? false : true //結果が入っているときはアラートを表示しない。
                     
-                    if showDuplicateAlert == false{
+                    showNoneValueAlert = text == "" ? true : false //科目名が空白の時にアラートを表示する
+                    
+                    if showDuplicateAlert == false && showNoneValueAlert == false{
                         //追加するTimeTableElementオブジェクトを作成する
                         let added_element: TimeTableElement = TimeTableElement(dayOfWeek: days[selectedIndex1], period: selectedIndex2 + 1, className: text, teacher:teacher, place:place)
                         

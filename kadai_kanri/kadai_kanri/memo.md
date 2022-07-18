@@ -28,5 +28,5 @@
 
 [] pickerの初期値をどうにかする
 
-[] addassignmnetの追加ボタンに機能ついか
+[x] addassignmnetの追加ボタンに機能ついか
 
