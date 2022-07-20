@@ -29,6 +29,7 @@ struct AddAssignment: View {
     @State var isadd: Bool = false //課題作成用
     @State var assignmentFilter = NSPredicate(format: "className == %@", "") //課題用フィルター
     
+    @State var showAddedAssignmentAlert = false //人の課題を追加した時にアラートを出す
 
     var body: some View {
         NavigationView {
@@ -99,11 +100,16 @@ struct AddAssignment: View {
                                                 realm.add(myAssignment)
                                             }
                                             
+                                            showAddedAssignmentAlert = true
+                                            
                                         })
                                             .foregroundColor(Color.black)
                                             .padding(5)
                                             .border(Color.black, width: 1)
                                             .frame(alignment: .trailing)
+                                            .alert(isPresented: $showAddedAssignmentAlert){
+                                                Alert(title: Text("課題を追加しました！"))
+                                            }
                                     }
                                     .padding()
                                     .frame(width: screenWidth - 80)
