@@ -24,7 +24,7 @@ struct AddAssignment: View {
     let userid :String
     @Binding var state: Bool
     
-    @State var selectedClass: String = ""
+    @State var selectedClass: String = "未選択"
     @State var isSelected: Bool = false //課題詳細用
     @State var isadd: Bool = false //課題作成用
     @State var assignmentFilter = NSPredicate(format: "className == %@", "") //課題用フィルター
@@ -51,6 +51,8 @@ struct AddAssignment: View {
                     HStack(spacing: 40) {
                         Text("科目名を選択")
                         Picker(selection: $selectedClass, label:  Text("科目名")) {
+                            Text("未選択").foregroundColor(Color.black)
+                                .tag("未選択")
                             ForEach(timeTableElements) { cell in
                                 Text("\(cell.className)").foregroundColor(Color.black)
                                     .tag(cell.className)
@@ -81,7 +83,7 @@ struct AddAssignment: View {
                             
                             let user = realmApp.currentUser!
                             let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter).distinct(by: ["assignmentName"])
-                            if assignments.count != 0 {
+                            if assignments.count != 0 && selectedClass != "未選択"{
                                 ForEach(assignments) { oneAssignment in
                                     HStack {
                                         Text(oneAssignment.assignmentName)

@@ -20,6 +20,8 @@ struct CreateAssignment: View {
     @State private var detail: String = "" //課題詳細
     @State private var selectionDate = Date()
     
+    @State private var isShowNoValueAlert = false //科目名が未選択の場合にアラートを出す
+    
     let userid :String
     var body: some View {
         NavigationView{
@@ -42,6 +44,9 @@ struct CreateAssignment: View {
                         HStack(spacing: 10) {
                             Text("科目名:")
                             Picker(selection: $selectedClass, label:  Text("科目名")) {
+                                if selectedClass == "未選択"{
+                                    Text("未選択").tag("未選択")
+                                }
                                 ForEach(timeTableElements) { cell in
                                     Text(cell.className).tag(cell.className)
                                 }
@@ -86,29 +91,36 @@ struct CreateAssignment: View {
                         .frame(width: screenWidth - 40, alignment: .leading)
                         
                         Button(action:{
-                            let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: detail, limitDate: selectionDate,duration: 0,className: selectedClass) //realmに追加するAssignmentオブジェクトを作成
-                            assignemtTemp.userName = userid
-                            
-                            
-                            //追加する
-                            let user = realmApp.currentUser!
-                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
-                            try! realm.write {
-                                realm.add(assignemtTemp)
+                            if selectedClass != "未選択"{
+                                let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: detail, limitDate: selectionDate,duration: 0,className: selectedClass) //realmに追加するAssignmentオブジェクトを作成
+                                assignemtTemp.userName = userid
+                                
+                                
+                                //追加する
+                                let user = realmApp.currentUser!
+                                let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                                try! realm.write {
+                                    realm.add(assignemtTemp)
+                                }
+                                
+                                state = false //前の画面に戻る
+                            }else{
+                                isShowNoValueAlert = true
                             }
                             
-                            state = false //前の画面に戻る
                         }){
                             Text("課題を追加")
                                 .padding()
                                 .border(.black, width: 1)
                                 .foregroundColor(.black)
                                 .background(Color.light_green)
+                            
                         }
                         .padding()
                         .frame(width: 200)
                         .compositingGroup()        // Viewの要素をグループ化
                         .shadow(radius: 3, y: 5)
+                        .alert("科目が未選択です",isPresented:$isShowNoValueAlert,actions: {})
                     }
                     .background(Color.light_green)
                     .padding()
