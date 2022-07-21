@@ -133,10 +133,12 @@ struct AddCell: View {
                         .padding()
                         .foregroundColor(.black)
                         .background(Color.light_gray)
+                        .hideOnKeyboard()
                 }
                 .padding()
                 .compositingGroup()        // Viewの要素をグループ化
-                .shadow(radius: 3, y: 5)            }
+                .shadow(radius: 3, y: 5)
+            }
         }
         .navigationBarHidden(true)
     }
