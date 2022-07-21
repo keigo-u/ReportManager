@@ -43,6 +43,8 @@ struct AddCell: View {
                 }
                 .frame(height: 80*rate_height)
                 .border(.black, width: 1)
+                .offset(x: 0, y: -60*rate_width)
+
                 Spacer()
                 ScrollView{
                     VStack{
