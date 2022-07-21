@@ -80,7 +80,7 @@ struct AddAssignment: View {
                             
                             
                             let user = realmApp.currentUser!
-                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
+                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter).distinct(by: ["assignmentName"])
                             if assignments.count != 0 {
                                 ForEach(assignments) { oneAssignment in
                                     HStack {
