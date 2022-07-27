@@ -31,114 +31,124 @@ struct AddAssignment: View {
     
 
     var body: some View {
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
         NavigationView {
             ZStack {
                 Color.light_beige.ignoresSafeArea()
                 VStack{
                     ZStack {
                         Color.beige
+                            .frame(height: 80*rate_height)
+                            .border(.gray, width: 3)
+
                         Text("課題追加")
                             .font(.title)
                             .padding()
                     }
-                    .frame(height: 80)
-                    .border(.gray, width: 3)
-                    .padding(.top, 15)
+                    .frame(height: 80*rate_height)
+                    .offset(x: 0, y: -60*rate_height)
                     
                     Spacer()
-                    
-                    HStack(spacing: 40) {
-                        Text("科目名を選択")
-                        Picker(selection: $selectedClass, label:  Text("科目名")) {
-                            ForEach(timeTableElements) { cell in
-                                Text("\(cell.className)").foregroundColor(Color.black)
-                                    .tag(cell.className)
-                            }
-                        }
-                        .onChange(of: selectedClass) { tmpClass in
-                            assignmentFilter = NSPredicate(format: "className == %@" , tmpClass)
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                        .colorMultiply(Color.black)
-                        //.labelsHidden()
-                        .padding(5)
-                        .padding(.leading, 35)
-                        .padding(.trailing, 35)
-                        .border(Color.gray, width: 1)
-                    }
-                    .padding()
-                    .frame(width: screenWidth - 40, height: 50, alignment: .leading)
-                    .background(Color.light_green)
-                    
-                    Spacer()
-                    
-                    VStack {
-                        Text("出されている課題")
-                            .padding(.top, 10)
-                        ScrollView {
-                            
-                            
-                            let user = realmApp.currentUser!
-                            let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
-                            if assignments.count != 0 {
-                                ForEach(assignments) { oneAssignment in
-                                    HStack {
-                                        Text(oneAssignment.assignmentName)
-                                            .frame(alignment: .leading)
-                                        Button("追加", action: {})
-                                            .foregroundColor(Color.black)
-                                            .padding(5)
-                                            .border(Color.black, width: 1)
-                                            .frame(alignment: .trailing)
+                    ScrollView{
+                        VStack{
+                            HStack(spacing: 40) {
+                                Text("科目名を選択")
+                                Picker(selection: $selectedClass, label:  Text("科目名")) {
+                                    ForEach(timeTableElements) { cell in
+                                        Text("\(cell.className)").foregroundColor(Color.black)
+                                            .tag(cell.className)
                                     }
-                                    .padding()
-                                    .frame(width: screenWidth - 80)
-                                    .background(Color.light_beige)
-                                    .compositingGroup()        // Viewの要素をグループ化
-                                    .shadow(radius: 3, y: 5)
                                 }
-                            } else {
-                                Text("    ")
-                                    .padding()
-                            }
-                        }
-                        .padding()
-                        .frame(width: screenWidth - 40)
-                        .background(Color.light_green)
-                    }
-                    .frame(width: screenWidth - 40)
-                    .background(Color.beige)
-                    
-                    Spacer()
-                    
-                    VStack {
-                        Text("追加したい課題が一覧にない場合")
-                            .padding(.top, 10)
-                        VStack {
-                            NavigationLink(destination: CreateAssignment(state: $isadd, selectedClass: selectedClass,userid:userid), isActive: $isadd) {
-                                Button (action:{
-                                    isadd = true
-                                }){
-                                    Text("新たに課題を追加")
-                                        .padding()
-                                        .border(.black, width: 1)
-                                        .foregroundColor(.black)
-                                        .background(Color.light_beige)
+                                .onChange(of: selectedClass) { tmpClass in
+                                    assignmentFilter = NSPredicate(format: "className == %@" , tmpClass)
                                 }
-                                .compositingGroup()        // Viewの要素をグループ化
-                                .shadow(radius: 3, y: 5)
+                                .pickerStyle(MenuPickerStyle())
+                                .colorMultiply(Color.black)
+                                //.labelsHidden()
+                                .padding(5)
+                                .padding(.leading, 35)
+                                .padding(.trailing, 35)
+                                .border(Color.gray, width: 1)
                             }
+                            .padding()
+                            .frame(width: screenWidth - (40*rate_width), height: 50, alignment: .leading)
+                            .background(Color.light_green)
+                            
+                            Spacer()
+                            
+                            VStack {
+                                Text("出されている課題")
+                                    .padding(.top, 10)
+                                ScrollView {
+                                    
+                                    
+                                    let user = realmApp.currentUser!
+                                    let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
+                                    if assignments.count != 0 {
+                                        ForEach(assignments) { oneAssignment in
+                                            HStack {
+                                                Text(oneAssignment.assignmentName)
+                                                    .frame(alignment: .leading)
+                                                Button("追加", action: {})
+                                                    .foregroundColor(Color.black)
+                                                    .padding(5)
+                                                    .border(Color.black, width: 1)
+                                                    .frame(alignment: .trailing)
+                                            }
+                                            .padding()
+                                            .frame(width: screenWidth - (80*rate_width))
+                                            .background(Color.light_beige)
+                                            .compositingGroup()        // Viewの要素をグループ化
+                                            .shadow(radius: 3, y: 5)
+                                        }
+                                    } else {
+                                        Text("    ")
+                                            .padding()
+                                    }
+                                }
+                                .padding()
+                                .frame(width: screenWidth - (40*rate_width))
+                                .background(Color.light_green)
+                            }
+                            .frame(width: screenWidth - (40*rate_width))
+                            .background(Color.beige)
+                            
+                            Spacer()
+                            
+                            VStack {
+                                Text("追加したい課題が一覧にない場合")
+                                    .padding(.top, 10)
+                                VStack {
+                                    NavigationLink(destination: CreateAssignment(state: $isadd, selectedClass: selectedClass,userid:userid), isActive: $isadd) {
+                                        Button (action:{
+                                            isadd = true
+                                        }){
+                                            Text("新たに課題を追加")
+                                                .padding()
+                                                .border(.black, width: 1)
+                                                .foregroundColor(.black)
+                                                .background(Color.light_beige)
+                                        }
+                                        .compositingGroup()        // Viewの要素をグループ化
+                                        .shadow(radius: 3, y: 5)
+                                    }
+                                }
+                                .padding()
+                                .frame(width: screenWidth - (40*rate_width))
+                                .background(Color.light_green)
+                            }
+                            .frame(width: screenWidth - (40*rate_width))
+                            .background(Color.beige)
+                            
+
+                            Spacer()
+
                         }
-                        .padding()
-                        .frame(width: screenWidth - 40)
-                        .background(Color.light_green)
                     }
-                    .frame(width: screenWidth - 40)
-                    .background(Color.beige)
-                    
-
-                    Spacer()
-
+                    .offset(x: 0, y: -30*rate_height)
                     
                     Divider()
                         .background(Color(hex: "8C8C8C"))

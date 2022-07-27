@@ -31,6 +31,8 @@ struct TaskManagementView: View {
         
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
+        let rate_width = screenWidth/390
+        let rate_height = screenHeight/844
         
         ZStack{
             NavigationView {
@@ -39,13 +41,15 @@ struct TaskManagementView: View {
                     VStack{
                         ZStack {
                             Color.beige
+                                .frame(height: 80*rate_height)
+                                .border(.gray, width: 3)
+
                             Text("課題管理")
-                                .padding()
                                 .font(.title)
+                                .padding()
                         }
-                        .frame(height: 80)
-                        .border(.gray, width: 3)
-                        .padding(.top, 15)
+                        .frame(height: 80*rate_height)
+                        .offset(x: 0, y: -60*rate_height)
                         
                         Spacer()
                         
@@ -66,105 +70,108 @@ struct TaskManagementView: View {
                             let assignments: Results<Assignment> = assignments.filter(filtering)
                             
                             
-                            
-                            VStack {
-                                
-                                //assignmentは予約語だったという・・・
+                            ScrollView {
+                                VStack {
+                                    
+                                    //assignmentは予約語だったという・・・
 
-                                ForEach(assignments) { oneAssignment in
+                                    ForEach(assignments) { oneAssignment in
 
-                                    if oneAssignment.isFinished == isFinished{
-                                        //タスク詳細画面を呼び出す
-                                        HStack{
-                                            if let realmUser = realmApp.currentUser{
-                                                NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
-                                                    .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
-                                                    let timeDay = (oneAssignment.duration/1440)
-                                                    let timeHour = (oneAssignment.duration%1440)/60
-                                                    let timeMinute = oneAssignment.duration%60
-                                                    
-                                                    //期限をDate型からString型へ
-                                                    let calender = Calendar(identifier: .gregorian)
-                                                    let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
-                                                    let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
-                                                    
-                                                    VStack {
-                                                        Text("科目名: \(oneAssignment.className)")
-                                                            .foregroundColor(Color.black)
-                                                        Text("課題名: \(oneAssignment.assignmentName)")
-                                                            .foregroundColor(Color.black)
-                                                        Text("期限: \(limitDateSet)")
-                                                            .foregroundColor(Color.black)
-                                                        if oneAssignment.isFinished != isFinished {
-                                                            Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
-                                                                .foregroundColor(Color.black)
-                                                        }
-                                                    }
-
-                                                }
-                                            }
-                                            
-                                            //左のチェックマークとゴミ箱
-                                            VStack{
-                                                //チェックボックス、タップすると完了済みに移動
-                                                Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
-                                                    .onTapGesture(count: 1){
+                                        if oneAssignment.isFinished == isFinished{
+                                            //タスク詳細画面を呼び出す
+                                            HStack{
+                                                if let realmUser = realmApp.currentUser{
+                                                    NavigationLink(destination: TaskDescriptionView(selectedAssignment: oneAssignment, state: $isSelected)
+                                                        .environment(\.realmConfiguration, realmUser.configuration(partitionValue: "allAssignment"))) {
+                                                        let timeDay = (oneAssignment.duration/1440)
+                                                        let timeHour = (oneAssignment.duration%1440)/60
+                                                        let timeMinute = oneAssignment.duration%60
                                                         
-                                                        //ポップアップを表示する（値の変更はポップアップのviewで行う）
-                                                        if oneAssignment.isFinished == false{
-                                                            isShowFinishPopUP = true
-                                                            nowSelectedAssighment = oneAssignment
-                                                        }else{
-                                                            //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
-                                                            let user = realmApp.currentUser!
-                                                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
-                                                            let finishedAssignment = oneAssignment.thaw()!
-                                                            try! realm.write {
-                                                                finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
+                                                        //期限をDate型からString型へ
+                                                        let calender = Calendar(identifier: .gregorian)
+                                                        let dateComponents = calender.dateComponents([.year, .month, .day, .hour, .minute], from: oneAssignment.limitDate)
+                                                        let limitDateSet: String = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!) \(dateComponents.hour!):\(dateComponents.minute!)"
+                                                        
+                                                        VStack {
+                                                            Text("科目名: \(oneAssignment.className)")
+                                                                .foregroundColor(Color.black)
+                                                            Text("課題名: \(oneAssignment.assignmentName)")
+                                                                .foregroundColor(Color.black)
+                                                            Text("期限: \(limitDateSet)")
+                                                                .foregroundColor(Color.black)
+                                                            if oneAssignment.isFinished != isFinished {
+                                                                Text("所要時間:\(timeDay)日\(timeHour)時間\(timeMinute)分")
+                                                                    .foregroundColor(Color.black)
                                                             }
                                                         }
-                                                        
-                                                        
+
                                                     }
-                                                
-                                                //ゴミ箱、タップすると削除される
-                                                Button(action: {
-                                                    isShowDeletePopUP.toggle()
-                                                    
-                                                }) {
-                                                    Image(systemName: "trash.fill")
-                                                        .foregroundColor(Color.gray)
                                                 }
-                                                .alert(isPresented: $isShowDeletePopUP) {
-                                                    Alert(title: Text("この課題を削除しますか？"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .destructive(Text("削除"), action: {
-                                                        let user = realmApp.currentUser!
-                                                        let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
-                                                        let deletedAssignment = oneAssignment.thaw()!
-                                                        try! realm.write {
-                                                            realm.delete(deletedAssignment)
+                                                
+                                                //左のチェックマークとゴミ箱
+                                                VStack{
+                                                    //チェックボックス、タップすると完了済みに移動
+                                                    Image(systemName: oneAssignment.isFinished ? "checkmark.square.fill" : "checkmark.square")
+                                                        .onTapGesture(count: 1){
+                                                            
+                                                            //ポップアップを表示する（値の変更はポップアップのviewで行う）
+                                                            if oneAssignment.isFinished == false{
+                                                                isShowFinishPopUP = true
+                                                                nowSelectedAssighment = oneAssignment
+                                                            }else{
+                                                                //課題のisFinishedを置き換える(「完了済み」に入った課題を「実行中」に戻すためを想定)
+                                                                let user = realmApp.currentUser!
+                                                                let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                                                                let finishedAssignment = oneAssignment.thaw()!
+                                                                try! realm.write {
+                                                                    finishedAssignment.isFinished = finishedAssignment.isFinished ? false : true
+                                                                }
+                                                            }
+                                                            
+                                                            
                                                         }
-                                                    }))
+                                                    
+                                                    //ゴミ箱、タップすると削除される
+                                                    Button(action: {
+                                                        isShowDeletePopUP.toggle()
+                                                        
+                                                    }) {
+                                                        Image(systemName: "trash.fill")
+                                                            .foregroundColor(Color.gray)
+                                                    }
+                                                    .alert(isPresented: $isShowDeletePopUP) {
+                                                        Alert(title: Text("この課題を削除しますか？"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .destructive(Text("削除"), action: {
+                                                            let user = realmApp.currentUser!
+                                                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                                                            let deletedAssignment = oneAssignment.thaw()!
+                                                            try! realm.write {
+                                                                realm.delete(deletedAssignment)
+                                                            }
+                                                        }))
+                                                    }
                                                 }
                                             }
+                                            .padding()
+                                            .frame(width: screenWidth - (80*rate_width))
+                                            .background(Color.light_beige)
+                                            .compositingGroup()        // Viewの要素をグループ化
+                                            .shadow(radius: 3, y: 5)
                                         }
-                                        .padding()
-                                        .frame(width: screenWidth - 80)
-                                        .background(Color.light_beige)
-                                        .compositingGroup()        // Viewの要素をグループ化
-                                        .shadow(radius: 3, y: 5)
                                     }
                                 }
+                                .padding()
+                                .frame(width: screenWidth - (40*rate_width))
+                                .background(Color.light_green)
                             }
-                            .padding()
-                            .frame(width: screenWidth - 40)
-                            .background(Color.light_green)
 
                             
                             Spacer()
 
                         }
+                        .offset(x: 0, y: -30*rate_height)
+                        
                         .background(Color.light_green)
-                        .frame(width: screenWidth - 40)
+                        .frame(width: screenWidth - (40*rate_width))
                         
                         
                         Spacer()
@@ -182,7 +189,7 @@ struct TaskManagementView: View {
                 //色を重ねることによって画面を暗くする
                 Rectangle()
                     .fill(Color.black)
-                    .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + 50)
+                    .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + (50*rate_height))
                     .opacity(0.3)
             }
             
