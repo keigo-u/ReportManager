@@ -25,18 +25,23 @@ struct CreateAssignment: View {
     let userid :String
     var body: some View {
         
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
+        
             ZStack {
                 Color.light_beige.ignoresSafeArea()
                 VStack {
                     ZStack {
                         Color.beige
+                            .frame(height: 80*rate_height)
+                            .border(.gray, width: 3)
                         Text("課題追加")
                             .font(.title)
                             .padding()
                     }
-                    .frame(height: 80)
-                    .border(.gray, width: 3)
-                    .padding(.top, 15)
+                    .frame(height: 80*rate_height)
                     
                     Spacer()
                     
@@ -62,7 +67,7 @@ struct CreateAssignment: View {
                                 .border(Color.gray, width: 1)
                             }
                             .padding()
-                            .frame(width: screenWidth - 40, alignment: .leading)
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
                             
                             HStack {
                                 Text("課題名:")
@@ -71,7 +76,7 @@ struct CreateAssignment: View {
                                     .border(Color.gray, width: 1)
                             }
                             .padding()
-                            .frame(width: screenWidth - 40, alignment: .leading)
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
                             
                             HStack {
                                 Text("期限:")
@@ -80,7 +85,7 @@ struct CreateAssignment: View {
                                     .colorMultiply(Color.black)
                             }
                             .padding()
-                            .frame(width: screenWidth - 40, alignment: .leading)
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
                             
                             HStack {
                                 Text("課題詳細:")
@@ -89,7 +94,7 @@ struct CreateAssignment: View {
                                     .border(Color.gray, width: 1)
                             }
                             .padding()
-                            .frame(width: screenWidth - 40, alignment: .leading)
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
                             
                             Button(action:{
                                 if selectedClass != "未選択"{
@@ -118,29 +123,30 @@ struct CreateAssignment: View {
                                 
                             }
                             .padding()
-                            .frame(width: 200)
+                            .frame(width: 200*rate_width)
                             .compositingGroup()        // Viewの要素をグループ化
                             .shadow(radius: 3, y: 5)
                             .alert("科目が未選択です",isPresented:$isShowNoValueAlert,actions: {})
                         }
                         .background(Color.light_green)
                         .padding()
-                        .frame(width: screenWidth - 40)
+                        .frame(width: screenWidth - (40*rate_width))
                         
                         Spacer()
                         
-                        Button(action: {
-                            state = false
-                        }) {
-                            Text("戻る　　　")
-                                .padding()
-                                .foregroundColor(.black)
-                                .background(Color.light_gray)
-                        }
-                        .padding()
-                        .compositingGroup()        // Viewの要素をグループ化
-                        .shadow(radius: 3, y: 5)
-                }
+                    }
+                        
+                    Button(action: {
+                        state = false
+                    }) {
+                        Text("戻る　　　")
+                            .padding()
+                            .foregroundColor(.black)
+                            .background(Color.light_gray)
+                    }
+                    .padding()
+                    .compositingGroup()        // Viewの要素をグループ化
+                    .shadow(radius: 3, y: 5)
                 }
             }
             .navigationBarHidden(true)
