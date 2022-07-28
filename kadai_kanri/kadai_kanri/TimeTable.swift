@@ -35,13 +35,14 @@ struct TimeTable: View {
                 VStack {
                     ZStack {
                         Color.beige
+                            .frame(height: 80*rate_height)
+                            .border(.gray, width: 3)
                         Text("時間割")
                             .font(.title)
                             .padding()
                     }
-                    .frame(height: 80*rate_width)
-                    .border(.gray, width: 3)
-                    .offset(x: 0, y: -60*rate_width)
+                    .frame(height: 80*rate_height)
+                    .offset(x: 0, y: -60*rate_height)
                     
                     //Spacer().frame(height:0)
                     
@@ -117,7 +118,7 @@ struct TimeTable: View {
                         }
                         .alert("削除する科目はありません",isPresented: $showDeleteAlert,actions: {})
                     }
-                    Spacer()
+                    .offset(x: 0, y: -30*rate_height)
                     
                     NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) {
                         Button (action:{
@@ -132,14 +133,13 @@ struct TimeTable: View {
                         .frame(width: 200*rate_width)
                         .compositingGroup()        // Viewの要素をグループ化
                         .shadow(radius: 3, y: 5)
+                        
                     }
                     .navigationBarHidden(true)
-                    
-                    
                     Spacer()
                     Divider()
                         .background(Color(hex: "8C8C8C"))
-                        .frame(height:2)
+                        .frame(height:2*rate_height)
                 }
             }
         }

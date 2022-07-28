@@ -36,16 +36,17 @@ struct AddCell: View {
         ZStack {
             Color.light_beige.ignoresSafeArea()
             VStack {
-                Spacer()
                 ZStack {
                     Color.beige
+                        .frame(height: 80*rate_height)
+                        .border(.gray, width: 3)
                     Text("科目追加")
-                        .font(.title)
+                    
                         .padding()
+                        .font(.title)
                 }
                 .frame(height: 80*rate_height)
-                .border(.black, width: 1)
-                Spacer()
+                .offset(x: 0, y: -60*rate_height)
 
                 ScrollView{
                     VStack{
@@ -101,6 +102,7 @@ struct AddCell: View {
 
                         
                         Spacer()
+                        
                         Button(action: {
                             //同じ位置に他の科目が入っていないか確認する
                             let filtering = NSPredicate(format: "dayOfWeek = %@ AND period = %@", argumentArray: ["\(days[selectedIndex1])",selectedIndex2 + 1]) //フィルタリングの条件を作成（曜日と何限目か指定）
@@ -129,7 +131,11 @@ struct AddCell: View {
                     }
                     
                 }
-                Button(action: {
+                .offset(x: 0, y: -30*rate_height)
+                
+
+                
+                Button (action:{
                     state = false
                 }){
                     Text("戻る　　　")
@@ -137,9 +143,15 @@ struct AddCell: View {
                         .foregroundColor(.black)
                         .background(Color.light_gray)
                 }
-                .padding()
+                .frame(width: 200*rate_width)
                 .compositingGroup()        // Viewの要素をグループ化
-                .shadow(radius: 3, y: 5)            }
+                .shadow(radius: 3, y: 5)
+                
+                Spacer()
+                Divider()
+                    .background(Color(hex: "8C8C8C"))
+                    .frame(height:2*rate_height)
+            }
         }
         .navigationBarHidden(true)
     }
