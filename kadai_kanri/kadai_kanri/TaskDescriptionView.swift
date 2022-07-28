@@ -36,6 +36,7 @@ struct TaskDescriptionView: View {
 
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
+        
         let rate_width = screenWidth/390
         let rate_height = screenHeight/844
         
@@ -55,13 +56,16 @@ struct TaskDescriptionView: View {
             VStack {
                 ZStack {
                     Color.beige
+                        .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
+                        .border(.gray, width: 3)
                     Text("課題詳細")
                     
                         .padding()
                         .font(.title)
                 }
                 .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
-                .border(.gray, width: 5)
+                .border(.gray, width: 3)
+                .offset(x:0,y:-60*rate_height)
                 
                 Spacer()
                 
@@ -98,6 +102,8 @@ struct TaskDescriptionView: View {
                         .frame(width: screenWidth-(40*rate_width))
                     }
                 }
+                .offset(x:0,y:-30*rate_height)
+                
                 
                 Button(action: {
                     dismiss()
@@ -110,17 +116,10 @@ struct TaskDescriptionView: View {
                 .padding()
                 .compositingGroup()        // Viewの要素をグループ化
                 .shadow(radius: 3, y: 5)
-                
-                Divider()
-                    .background(Color(hex: "8C8C8C"))
-                    .frame(height:2)
             }
-            .navigationBarHidden(true)
         }
+        .navigationBarBackButtonHidden(true)
     }
-    
-    
-    
 }
 
 struct TaskDescriptionView_Previews: PreviewProvider {

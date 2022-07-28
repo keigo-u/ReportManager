@@ -67,7 +67,8 @@ struct TabViews: View{
 
     var body: some View {
         
-        TabView(selection: $tabSelection) {
+        NavigationView{
+            TabView(selection: $tabSelection) {
             TimeTable(tabSelection: $tabSelection, userName: username)
                 .tabItem {
                     Image(systemName: "clock.fill")
@@ -88,8 +89,9 @@ struct TabViews: View{
                     Image(systemName: "plus.app")
                     Text("課題追加")
                 }.tag(2)
-            
+            }
         }
+        .navigationBarHidden(true)
         .accentColor(Color(hex: "D4DAD6"))
     }
 }

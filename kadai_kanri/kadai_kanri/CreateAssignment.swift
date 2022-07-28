@@ -42,6 +42,7 @@ struct CreateAssignment: View {
                             .padding()
                     }
                     .frame(height: 80*rate_height)
+                    .offset(x:0,y:-60*rate_height)
                     
                     Spacer()
                     
@@ -135,6 +136,7 @@ struct CreateAssignment: View {
                         Spacer()
                         
                     }
+                    .offset(x:0,y:-30*rate_height)
                         
                     Button(action: {
                         state = false
@@ -147,10 +149,10 @@ struct CreateAssignment: View {
                     .padding()
                     .compositingGroup()        // Viewの要素をグループ化
                     .shadow(radius: 3, y: 5)
+                    .hideOnKeyboard()
                 }
             }
-            .navigationBarHidden(true)
-        
+            .navigationBarBackButtonHidden(true)
     }
 }
 
