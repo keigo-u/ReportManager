@@ -78,7 +78,7 @@ struct ClassDescription: View {
                             .padding()
                             .font(.title)
                     }
-                    .frame(width: screenWidth-(60*rate_width), height: 80*rate_width)
+                    .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
                     .border(.gray, width: 5)
                     
                     Spacer()

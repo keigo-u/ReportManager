@@ -36,6 +36,8 @@ struct TaskDescriptionView: View {
 
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
+        let rate_width = screenWidth/390
+        let rate_height = screenHeight/844
         
                         
         let filtering = NSPredicate(format: "assignmentName = %@ AND className = %@ AND isFinished = %@", argumentArray: ["\(selectedAssignment.assignmentName)","\(selectedAssignment.className)",true]) //フィルタリングの条件を作成（選択された課題名と等しい課題を指定）
@@ -54,47 +56,48 @@ struct TaskDescriptionView: View {
                 ZStack {
                     Color.beige
                     Text("課題詳細")
-                        .font(.title)
+                    
                         .padding()
+                        .font(.title)
                 }
-                .frame(height: 80)
-                .border(.gray, width: 3)
-                .padding(.top, 15)
+                .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
+                .border(.gray, width: 5)
                 
                 Spacer()
                 
-                VStack {
-                    Text("科目名: \(selectedAssignment.className)")
-                    Divider()
-                    Text("課題名: \(selectedAssignment.assignmentName)")
-                    Divider()
-                    Text("期限: \(limitDateSet)")
-                    Divider()
-                    Text("平均所要時間: \(averageTime)分")
-                }
-                .padding()
-                .frame(width: screenWidth-80, alignment: .leading)
-                .background(Color.beige)
-                
-                ScrollView {
-                    ForEach(filtedList) { element in
+                ScrollView{
+                    VStack {
                         VStack {
-                            Text("\(element.userName)さん")
+                            Text("科目名: \(selectedAssignment.className)")
                             Divider()
-                            Text("所要時間:\(element.duration)")
+                            Text("課題名: \(selectedAssignment.assignmentName)")
                             Divider()
-                            Text("備考:\(element.detail)")
+                            Text("期限: \(limitDateSet)")
+                            Divider()
+                            Text("平均所要時間: \(averageTime)分")
                         }
-                        .padding(5)
-                        .background(Color.light_beige)
+                        .padding()
+                        .frame(width: screenWidth-(80*rate_width), alignment: .leading)
+                        .background(Color.beige)
+                        
+                        
+                        ForEach(filtedList) { element in
+                            VStack {
+                                Text("\(element.userName)さん")
+                                Divider()
+                                Text("所要時間:\(element.duration)")
+                                Divider()
+                                Text("備考:\(element.detail)")
+                            }
+                            .padding(5)
+                            .background(Color.light_beige)
+                            .border(Color.gray, width:1)
+                        }
+                        .padding()
+                        .background(Color.light_green)
+                        .frame(width: screenWidth-(40*rate_width))
                     }
-                    .border(Color.gray, width:1)
-                    
-                    Spacer()
                 }
-                .padding()
-                .background(Color.light_green)
-                .frame(width: screenWidth-40)
                 
                 Button(action: {
                     dismiss()
@@ -107,6 +110,10 @@ struct TaskDescriptionView: View {
                 .padding()
                 .compositingGroup()        // Viewの要素をグループ化
                 .shadow(radius: 3, y: 5)
+                
+                Divider()
+                    .background(Color(hex: "8C8C8C"))
+                    .frame(height:2)
             }
             .navigationBarHidden(true)
         }
