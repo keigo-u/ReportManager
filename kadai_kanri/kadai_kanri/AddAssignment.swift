@@ -36,7 +36,7 @@ struct AddAssignment: View {
         let phone_height = UIScreen.main.bounds.size.height
         let rate_width = phone_width/390
         let rate_height = phone_height/844
-        NavigationView {
+
             ZStack {
                 Color.light_beige.ignoresSafeArea()
                 VStack{
@@ -176,8 +176,6 @@ struct AddAssignment: View {
                         .frame(height:2)
                 }
             }
-            .navigationBarHidden(true)
-        }
     }
 }
 //
