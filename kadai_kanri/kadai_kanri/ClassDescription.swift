@@ -56,13 +56,14 @@ struct ClassDescription: View {
                     Color.beige
                         .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
                         .border(.gray, width: 3)
+                     
                     Text(ClassName)
                         .padding()
                         .font(.title)
                 }
                 .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
-                .padding()
-                .offset(x:0,y:-80*rate_height)
+                .border(.gray, width: 3)
+                .offset(x:0,y:-60*rate_height)
 
                 ScrollView{
                     VStack {
@@ -164,6 +165,7 @@ struct ClassDescription: View {
                                     }
                                 }
                                 .padding()
+                                .frame(width: screenWidth - (80*rate_width))
                                 .background(Color.light_beige)
                             }
                         }
@@ -171,7 +173,7 @@ struct ClassDescription: View {
                         .padding(10)
                         .background(Color.light_green)
                     }
-                    .frame(width: screenWidth-(60*rate_width), height: 220*rate_width)
+                    .frame(width: screenWidth-(60*rate_width), height: 260*rate_width)
                     .background(Color.beige)
                 }
                 .offset(x:0,y:-40*rate_height)
@@ -188,7 +190,6 @@ struct ClassDescription: View {
                 .compositingGroup()        // Viewの要素をグループ化
                 .shadow(radius: 3, y: 5)
             }
-            .navigationBarBackButtonHidden(true)
         
             if isShowFinishPopUP{
                 //色を重ねることによって画面を暗くする
@@ -204,6 +205,7 @@ struct ClassDescription: View {
             }
             
         }
+        .navigationBarBackButtonHidden(true)
 
         
         /*
