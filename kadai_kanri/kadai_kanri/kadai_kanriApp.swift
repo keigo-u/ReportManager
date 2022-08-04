@@ -9,6 +9,7 @@
 
 import SwiftUI
 import RealmSwift
+import KeyboardObserving
 
 let realmApp = RealmSwift.App(id: "task_manager-qiurl")
 
@@ -17,6 +18,7 @@ struct kadai_kanriApp: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(Keyboard())
         }
     }
 }

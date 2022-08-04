@@ -24,30 +24,35 @@ struct TimeTable: View {
         let days: [String] = ["月", "火", "水", "木", "金"]
         let width: CGFloat = 55
         let height: CGFloat = 75
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
         
-        NavigationView {
-            ZStack {
-                Color.light_beige.ignoresSafeArea() //背景色
-                VStack {
-                    ZStack {
-                        Color.beige
-                        Text("時間割")
-                            .font(.title)
-                            .padding()
-                    }
-                    .frame(height: 80)
-                    .border(.gray, width: 3)
-                    .padding(.top, 15)
-                    
-                    Spacer()
-                    
+        ZStack {
+            Color.light_beige.ignoresSafeArea() //背景色
+            VStack {
+                ZStack {
+                    Color.beige
+                        .frame(height: 80*rate_height)
+                        .border(.gray, width: 3)
+                    Text("時間割")
+                        .font(.title)
+                        .padding()
+                }
+                .frame(height: 80*rate_height)
+                .offset(x: 0, y: -60*rate_height)
+                
+                //Spacer().frame(height:0)
+                
+                ScrollView{
                     HStack {
                         Text("")
-                            .frame(width: 30, height: 60)
+                            .frame(width: 30*rate_width, height: 60*rate_width)
                             .background(Color.light_green)
                         ForEach(days, id: \.self) { day in
                             Text("\(day)")
-                                .frame(width: width, height: 60)
+                                .frame(width: width*rate_width, height: 60*rate_width)
                                 .background(Color.light_green)
                         }
                     }
@@ -56,7 +61,7 @@ struct TimeTable: View {
                         VStack {
                             ForEach((1...5), id: \.self) { index in
                                 Text("\(index)")
-                                    .frame(width: 30, height: height)
+                                    .frame(width: 30*rate_width, height: height*rate_width)
                                     .background(Color.light_green)
                             }
                         }
@@ -80,7 +85,7 @@ struct TimeTable: View {
                                                 dayOfWeek = day
                                                 period = pe
                                             }) {
-                                                TimeTableCell(width: width, height: height, className: presentText)
+                                                TimeTableCell(width: width*rate_width, height: height*rate_width, className: presentText)
                                             } }
                                             .contextMenu(menuItems:
                                                             {
@@ -102,7 +107,7 @@ struct TimeTable: View {
                                             NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) { Button(action:{
                                                 isadd = true
                                             }) {
-                                                TimeTableCell(width: width, height: height, className: presentText)
+                                                TimeTableCell(width: width*rate_width, height: height*rate_width, className: presentText)
                                             } }
                                         }
                                     }
@@ -111,30 +116,29 @@ struct TimeTable: View {
                         }
                     }
                     .alert("削除する科目はありません",isPresented: $showDeleteAlert,actions: {})
-                    Spacer()
-                    
-                    NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) {
-                        Button (action:{
-                            isadd = true
-                        }){
-                            Text("科目を追加")
-                                .padding()
-                                .border(.black, width: 1)
-                                .foregroundColor(.black)
-                                .background(Color.light_green)
-                        }
-                        .frame(width: 200)
-                        .compositingGroup()        // Viewの要素をグループ化
-                        .shadow(radius: 3, y: 5)
-                    }
-                    .navigationBarHidden(true)
-                    
-                    
-                    Spacer()
-                    Divider()
-                        .background(Color(hex: "8C8C8C"))
-                        .frame(height:2)
                 }
+                .offset(x: 0, y: -30*rate_height)
+                
+                NavigationLink(destination: AddCell(state: $isadd), isActive: $isadd) {
+                    Button (action:{
+                        isadd = true
+                    }){
+                        Text("科目を追加")
+                            .padding()
+                            .border(.black, width: 1)
+                            .foregroundColor(.black)
+                            .background(Color.light_green)
+                    }
+                    .frame(width: 200*rate_width)
+                    .compositingGroup()        // Viewの要素をグループ化
+                    .shadow(radius: 3, y: 5)
+                    
+                }
+                
+                Spacer()
+                Divider()
+                    .background(Color(hex: "8C8C8C"))
+                    .frame(height:2*rate_height)
             }
         }
     }

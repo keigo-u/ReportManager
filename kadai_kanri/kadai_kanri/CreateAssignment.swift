@@ -20,102 +20,124 @@ struct CreateAssignment: View {
     @State private var detail: String = "" //課題詳細
     @State private var selectionDate = Date()
     
+    @State private var isShowNoValueAlert = false //科目名が未選択の場合にアラートを出す
+    
     let userid :String
     var body: some View {
-        NavigationView{
+        
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
+        
             ZStack {
                 Color.light_beige.ignoresSafeArea()
                 VStack {
                     ZStack {
                         Color.beige
+                            .frame(height: 80*rate_height)
+                            .border(.gray, width: 3)
                         Text("課題追加")
                             .font(.title)
                             .padding()
                     }
-                    .frame(height: 80)
-                    .border(.gray, width: 3)
-                    .padding(.top, 15)
+                    .frame(height: 80*rate_height)
+                    .offset(x:0,y:-60*rate_height)
                     
                     Spacer()
                     
-                    VStack {
-                        HStack(spacing: 10) {
-                            Text("科目名:")
-                            Picker(selection: $selectedClass, label:  Text("科目名")) {
-                                ForEach(timeTableElements) { cell in
-                                    Text(cell.className).tag(cell.className)
+                    ScrollView {
+                        VStack {
+                            HStack(spacing: 10) {
+                                Text("科目名:")
+                                Picker(selection: $selectedClass, label:  Text("科目名")) {
+                                    if selectedClass == "未選択"{
+                                        Text("未選択").tag("未選択")
+                                    }
+                                    ForEach(timeTableElements) { cell in
+                                        Text(cell.className).tag(cell.className)
+                                    }
                                 }
-                            }
-                            .pickerStyle(MenuPickerStyle())
-                            .colorMultiply(Color.black)
-                            .foregroundColor(Color.black)
-                            .labelsHidden()
-                            .padding(5)
-                            .padding(.leading, 35)
-                            .padding(.trailing, 35)
-                            .border(Color.gray, width: 1)
-                        }
-                        .padding()
-                        .frame(width: screenWidth - 40, alignment: .leading)
-                        
-                        HStack {
-                            Text("課題名:")
-                            TextField("", text: $AssignmentName)
-                                .padding(5)
-                                .border(Color.gray, width: 1)
-                        }
-                        .padding()
-                        .frame(width: screenWidth - 40, alignment: .leading)
-                        
-                        HStack {
-                            Text("期限:")
-                            DatePicker("期限", selection: $selectionDate)
-                                .labelsHidden()
+                                .pickerStyle(MenuPickerStyle())
                                 .colorMultiply(Color.black)
-                        }
-                        .padding()
-                        .frame(width: screenWidth - 40, alignment: .leading)
-                        
-                        HStack {
-                            Text("課題詳細:")
-                            TextField("", text: $detail)
+                                .foregroundColor(Color.black)
+                                .labelsHidden()
                                 .padding(5)
+                                .padding(.leading, 35)
+                                .padding(.trailing, 35)
                                 .border(Color.gray, width: 1)
-                        }
-                        .padding()
-                        .frame(width: screenWidth - 40, alignment: .leading)
-                        
-                        Button(action:{
-                            let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: detail, limitDate: selectionDate,duration: 0,className: selectedClass) //realmに追加するAssignmentオブジェクトを作成
-                            assignemtTemp.userName = userid
-                            
-                            
-                            //追加する
-                            let user = realmApp.currentUser!
-                            let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
-                            try! realm.write {
-                                realm.add(assignemtTemp)
                             }
+                            .padding()
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
                             
-                            state = false //前の画面に戻る
-                        }){
-                            Text("課題を追加")
-                                .padding()
-                                .border(.black, width: 1)
-                                .foregroundColor(.black)
-                                .background(Color.light_green)
+                            HStack {
+                                Text("課題名:")
+                                TextField("", text: $AssignmentName)
+                                    .padding(5)
+                                    .border(Color.gray, width: 1)
+                            }
+                            .padding()
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
+                            
+                            HStack {
+                                Text("期限:")
+                                DatePicker("期限", selection: $selectionDate)
+                                    .labelsHidden()
+                                    .colorMultiply(Color.black)
+                            }
+                            .padding()
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
+                            
+                            HStack {
+                                Text("課題詳細:")
+                                TextField("", text: $detail)
+                                    .padding(5)
+                                    .border(Color.gray, width: 1)
+                            }
+                            .padding()
+                            .frame(width: screenWidth - (40*rate_width), alignment: .leading)
+                            
+                            Button(action:{
+                                if selectedClass != "未選択"{
+                                    let assignemtTemp = Assignment(assigmentName: AssignmentName,detail: detail, limitDate: selectionDate,duration: 0,className: selectedClass) //realmに追加するAssignmentオブジェクトを作成
+                                    assignemtTemp.userName = userid
+                                    
+                                    
+                                    //追加する
+                                    let user = realmApp.currentUser!
+                                    let realm = try! Realm(configuration: user.configuration(partitionValue: "allAssignment"))
+                                    try! realm.write {
+                                        realm.add(assignemtTemp)
+                                    }
+                                    
+                                    state = false //前の画面に戻る
+                                }else{
+                                    isShowNoValueAlert = true
+                                }
+                                
+                            }){
+                                Text("課題を追加")
+                                    .padding()
+                                    .border(.black, width: 1)
+                                    .foregroundColor(.black)
+                                    .background(Color.light_green)
+                                
+                            }
+                            .padding()
+                            .frame(width: 200*rate_width)
+                            .compositingGroup()        // Viewの要素をグループ化
+                            .shadow(radius: 3, y: 5)
+                            .alert("科目が未選択です",isPresented:$isShowNoValueAlert,actions: {})
                         }
+                        .background(Color.light_green)
                         .padding()
-                        .frame(width: 200)
-                        .compositingGroup()        // Viewの要素をグループ化
-                        .shadow(radius: 3, y: 5)
+                        .frame(width: screenWidth - (40*rate_width))
+                        
+                        Spacer()
+                        
                     }
-                    .background(Color.light_green)
-                    .padding()
-                    .frame(width: screenWidth - 40)
-                    
-                    Spacer()
-                    
+                    .offset(x:0,y:-30*rate_height)
+                        
                     Button(action: {
                         state = false
                     }) {
@@ -127,10 +149,10 @@ struct CreateAssignment: View {
                     .padding()
                     .compositingGroup()        // Viewの要素をグループ化
                     .shadow(radius: 3, y: 5)
+                    .hideOnKeyboard()
                 }
             }
-            .navigationBarHidden(true)
-        }
+            .navigationBarBackButtonHidden(true)
     }
 }
 

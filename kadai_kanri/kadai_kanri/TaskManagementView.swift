@@ -31,36 +31,47 @@ struct TaskManagementView: View {
         
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
+        let rate_width = screenWidth/390
+        let rate_height = screenHeight/844
         
         ZStack{
-            NavigationView {
-                ZStack{
-                    Color.light_beige.ignoresSafeArea()
-                    VStack{
-                        ZStack {
-                            Color.beige
-                            Text("課題管理")
-                                .padding()
-                                .font(.title)
-                        }
-                        .frame(height: 80)
-                        .border(.gray, width: 3)
-                        .padding(.top, 15)
-                        
-                        Spacer()
-                        
-                        VStack{
-                            Picker(selection: $isFinished, label: Text("実行状態")) {
-                                Text("実行中")
-                                    .tag(false)
-                                Text("完了済み")
-                                    .tag(true)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
+            ZStack{
+                Color.light_beige.ignoresSafeArea()
+                VStack{
+                    ZStack {
+                        Color.beige
+                            .frame(height: 80*rate_height)
+                            .border(.gray, width: 3)
+
+                        Text("課題管理")
+                            .font(.title)
                             .padding()
-                            .background(Color.beige)
-                            
-                            ScrollView {
+                    }
+                    .frame(height: 80*rate_height)
+                    .offset(x: 0, y: -60*rate_height)
+                    
+                    Spacer()
+                    
+                    VStack{
+                        Picker(selection: $isFinished, label: Text("実行状態")) {
+                            Text("実行中")
+                                .tag(false)
+                            Text("完了済み")
+                                .tag(true)
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding()
+                        .background(Color.beige)
+                        
+                        
+                        //自分の課題を取り出す
+                        let filtering = NSPredicate(format: "userName = %@", argumentArray: ["\(userid)"])
+                        let assignments: Results<Assignment> = assignments.filter(filtering)
+                        
+                        
+                        ScrollView {
+                            VStack {
+                                
                                 //assignmentは予約語だったという・・・
 
                                 ForEach(assignments) { oneAssignment in
@@ -140,7 +151,7 @@ struct TaskManagementView: View {
                                             }
                                         }
                                         .padding()
-                                        .frame(width: screenWidth - 80)
+                                        .frame(width: screenWidth - (80*rate_width))
                                         .background(Color.light_beige)
                                         .compositingGroup()        // Viewの要素をグループ化
                                         .shadow(radius: 3, y: 5)
@@ -148,33 +159,34 @@ struct TaskManagementView: View {
                                 }
                             }
                             .padding()
-                            .frame(width: screenWidth - 40)
+                            .frame(width: screenWidth - (40*rate_width))
                             .background(Color.light_green)
-
-                            
-                            Spacer()
-
                         }
-                        .background(Color.light_green)
-                        .frame(width: screenWidth - 40)
-                        
+
                         
                         Spacer()
-                        
-                        Divider()
-                            .background(Color(hex: "8C8C8C"))
-                            .frame(height:2)
+
                     }
-                    .frame(maxWidth: .infinity)
+                    .offset(x: 0, y: -30*rate_height)
+                    
+                    .background(Color.light_green)
+                    .frame(width: screenWidth - (40*rate_width))
+                    
+                    
+                    Spacer()
+                    
+                    Divider()
+                        .background(Color(hex: "8C8C8C"))
+                        .frame(height:2)
                 }
-                .navigationBarHidden(true)
+                .frame(maxWidth: .infinity)
             }
-            
+        
             if isShowFinishPopUP {
                 //色を重ねることによって画面を暗くする
                 Rectangle()
                     .fill(Color.black)
-                    .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + 50)
+                    .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + (50*rate_height))
                     .opacity(0.3)
             }
             

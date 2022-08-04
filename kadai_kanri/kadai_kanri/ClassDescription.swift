@@ -42,41 +42,29 @@ struct ClassDescription: View {
         let assignmentFilter = NSPredicate(format: "className == %@ AND userName = %@", argumentArray: ["\(ClassName)","\(userid)"])
         let user = realmApp.currentUser!
         let filtedAssignmentsList = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter)
-       
-        //let filtedAssignmentsList: Results<Assignment> = assignments.filter(assignmentFilter)
         
+        let phone_width = UIScreen.main.bounds.size.width
+        let phone_height = UIScreen.main.bounds.size.height
+        let rate_width = phone_width/390
+        let rate_height = phone_height/844
+        
+        //let filtedAssignmentsList: Results<Assignment> = assignments.filter(assignmentFilter)
         ZStack {
-
-            Color.light_beige.ignoresSafeArea() //背景色
+            Color.light_beige.ignoresSafeArea()
             VStack {
-                
-                //同じのが二つあったのでとりあえずコメントアウト
-//                ZStack {
-//                    Color.beige
-//                    Text(ClassName)
-//                        .font(.title)
-//                        .padding()
-//                }
-//
-//                .frame(width: screenWidth-60, height: 80)
-//                .border(.gray, width: 5)
-//                .padding(.top, 15)
-//
-//                Spacer()
-                
-                VStack {
-                    Spacer()
-                    ZStack {
-                        Color.beige
-                        Text(ClassName)
-                            .font(.title)
-                            .padding()
-                    }
-                    .frame(width: screenWidth-60, height: 80)
-                    .border(.gray, width: 5)
-                    
-                    Spacer()
-                    
+                ZStack {
+                    Color.beige
+                        .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
+                        .border(.gray, width: 3)
+                    Text(ClassName)
+                        .padding()
+                        .font(.title)
+                }
+                .frame(width: screenWidth-(60*rate_height), height: 80*rate_height)
+                .padding()
+                .offset(x:0,y:-80*rate_height)
+
+                ScrollView{
                     VStack {
                         Text("講義の詳細")
                             .padding(.top, 10)
@@ -109,10 +97,8 @@ struct ClassDescription: View {
                         .padding()
                         .background(Color.light_green)
                     }
-                    .frame(width: screenWidth-60)
+                    .frame(width: screenWidth-(60*rate_width))
                     .background(Color.beige)
-                    
-                    Spacer()
                     
                     VStack {
                         Text("課題一覧")
@@ -133,7 +119,6 @@ struct ClassDescription: View {
                                             """)
                                             .foregroundColor(Color.black)
                                     }
-                                    .navigationBarHidden(true)
                                     
                                     //左のチェックマークとゴミ箱
                                     VStack{
@@ -182,35 +167,35 @@ struct ClassDescription: View {
                                 .background(Color.light_beige)
                             }
                         }
-                        .frame(width: screenWidth-80)
+                        .frame(width: screenWidth-(80*rate_width))
                         .padding(10)
                         .background(Color.light_green)
                     }
-                    .frame(width: screenWidth-60, height: 220)
+                    .frame(width: screenWidth-(60*rate_width), height: 220*rate_width)
                     .background(Color.beige)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        state = false
-                    }) {
-                        Text("戻る　　　")
-                            .padding()
-                            .foregroundColor(.black)
-                            .background(Color.light_gray)
-                    }
-                    .padding()
-                    .compositingGroup()        // Viewの要素をグループ化
-                    .shadow(radius: 3, y: 5)
                 }
-            
-                if isShowFinishPopUP{
-                    //色を重ねることによって画面を暗くする
-                    Rectangle()
-                        .fill(Color.black)
-                        .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + 50)
-                        .opacity(0.3)
+                .offset(x:0,y:-40*rate_height)
+                
+                Button(action: {
+                    state = false
+                }) {
+                    Text("戻る　　　")
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(Color.light_gray)
                 }
+                .padding()
+                .compositingGroup()        // Viewの要素をグループ化
+                .shadow(radius: 3, y: 5)
+            }
+            .navigationBarBackButtonHidden(true)
+        
+            if isShowFinishPopUP{
+                //色を重ねることによって画面を暗くする
+                Rectangle()
+                    .fill(Color.black)
+                    .frame(width:CGFloat(screenWidth), height: CGFloat(screenHeight) + (50*rate_height))
+                    .opacity(0.3)
             }
             
             //終了タスクポップアップ表示用
@@ -219,8 +204,7 @@ struct ClassDescription: View {
             }
             
         }
-        .navigationBarHidden(true)
-        
+
         
         /*
         if isShowDeletePopUP{

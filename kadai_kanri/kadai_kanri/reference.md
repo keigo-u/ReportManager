@@ -110,7 +110,7 @@ nilだいいきらい！！！！！！
 
 [Realmのfilterメソッドの使い方](https://frog9.com/post/19)
 
-[Add Results.distinct(by:) / -\[RLMResults distinctResultsUsingKeyPaths:\], which return a Results containing only objects with unique values at the given key paths.](https://github.com/realm/realm-swift/releases/tag/v3.1.0)
+[Add Results.distinct(by:) / -[RLMResults distinctResultsUsingKeyPaths:], which return a Results containing only objects with unique values at the given key paths.](https://github.com/realm/realm-swift/releases/tag/v3.1.0)
 
 [distinct query in Realm database #1103](https://github.com/realm/realm-swift/issues/1103)
 
