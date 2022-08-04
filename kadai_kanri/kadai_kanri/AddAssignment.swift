@@ -86,11 +86,10 @@ struct AddAssignment: View {
                             VStack {
                                 Text("出されている課題")
                                     .padding(.top, 10)
+                            
+                                let user = realmApp.currentUser!
+                                let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter).distinct(by: ["assignmentName"])
                                 ScrollView {
-                                    
-                                    
-                                    let user = realmApp.currentUser!
-                                    let assignments = try! Realm(configuration: user.configuration(partitionValue: "allAssignment")).objects(Assignment.self).filter(assignmentFilter).distinct(by: ["assignmentName"])
                                     if assignments.count != 0 && selectedClass != "未選択"{
                                         ForEach(assignments) { oneAssignment in
                                             HStack {
@@ -130,11 +129,11 @@ struct AddAssignment: View {
                                             .padding()
                                     }
                                 }
-                                .padding()
-                                .frame(width: screenWidth - (40*rate_width))
+                                .frame(width: screenWidth-(40*rate_width))
+                                .padding(10)
                                 .background(Color.light_green)
                             }
-                            .frame(width: screenWidth - (40*rate_width))
+                            .frame(width: screenWidth-(40*rate_width), height: 240*rate_width)
                             .background(Color.beige)
                             
                             Spacer()
